@@ -1,0 +1,155 @@
+.sliderHome {
+    display: flex;
+    align-items: center;
+}
+
+.header {
+    background-color: transparent !important;
+}
+
+.topBannerHome {
+    background-image: url('../../assets/images/home-page-banner-bg.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    margin-top: -113px;
+    padding: 10% 0% 7% 0%;
+}
+
+.sliderHome img {
+    width: 100%;
+}
+
+.btnHome {
+    border-radius: 30px 30px 30px 30px;
+    margin-right: 20px;
+    padding: 15px 30px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 40px;
+}
+
+.btnHome.buyers {
+    background-color: red;
+    color: white;
+    border: none;
+}
+
+.btnHome.sellers {
+    background-color: transparent;
+    border: 1px solid #343434;
+    color: #343434;
+}
+
+.topHeadingHome {
+    color: #3b3a3a;
+}
+
+.sliderHomeIcon {
+    width: 80px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 23px;
+    margin-top: 40px;
+}
+
+.leftIcon,
+.rightIcon {
+    cursor: pointer;
+}
+
+.sectionTwo {
+    padding: 7% 0%;
+}
+
+.sectionTwo .topHeadingHome {
+    text-align: center;
+}
+
+.paraHome {
+    text-align: center;
+}
+
+.sliderSectionTwo {
+    margin-top: 30px;
+}
+
+.slider {
+    width: 90% !important;
+    text-align: center;
+}
+
+.slidesImage img {
+    width: 100%;
+}
+
+.slidesName h3 {
+    font-weight: 700;
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.slidesDetailBtn {
+    margin-top: 15px;
+}
+
+.slidesDetailBtn button {
+    border: 1px solid #959595;
+    border-radius: 40px;
+    padding: 15px;
+    background: #e7e7e7;
+    color: #464646;
+    cursor: pointer;
+}
+
+.categories {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.catLink {
+    width: 18%;
+    margin-top: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.catLink:hover {
+    color: red;
+}
+
+.category {
+    text-align: center;
+}
+
+.catIcon {
+    background-color: #e1e1e0;
+    padding: 40px 40px;
+    border-radius: 50%;
+    border: 4px dotted #7a7a79;
+    /* border-spacing: 15px; */
+}
+
+.catTitle {
+    font-weight: 600;
+    margin-top: 20px;
+}
+
+
+.custom-arrow {
+    position: absolute !important;
+    font-size: 30px;
+    cursor: pointer;
+}
+
+.custom-prev {
+    margin-top: 500px !important;
+    margin-left: 470px !important;
+}
+
+.custom-next {
+    margin-top: 39px !important;
+    margin-left: 555px !important;
+}

@@ -1,0 +1,91 @@
+.footer {
+    padding: 7% 0;
+}
+
+.logo {
+    text-align: center;
+}
+
+.inputForm {
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.emailInput {
+    padding: 20px;
+    border: 1px solid #b7b7b7;
+    border-radius: 30px 0px 0px 30px;
+    width: 70%;
+    /* font-size: 14px; */
+}
+
+.emailInput:focus {
+    outline: none;
+}
+
+.btn {
+    padding: 20px;
+    background-color: red;
+    border: 1px solid #b7b7b7;
+    border-left: none;
+    border-radius: 0px 30px 30px 0px;
+    color: white;
+    cursor: pointer;
+}
+
+.footerNav {
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.df {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.footerNavSubDiv {
+    width: 23%;
+}
+
+.icon {
+    width: 15%;
+    color: red;
+    font-size: 25px;
+}
+
+.text {
+    width: 85%;
+}
+
+.text p {
+    margin: 8px 0px;
+}
+
+.text p a {
+    color: black;
+    text-decoration: none;
+}
+
+.hr {
+    margin-top: 80px;
+}
+
+.copyright {
+    text-align: center;
+    font-weight: 500;
+}
+
+.socialIcons {
+    width: 50%;
+}
+
+.sIcon {
+    width: 30%;
+}
+
+.sIcon a img {
+    width: 100%;
+}

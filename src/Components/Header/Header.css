@@ -1,0 +1,113 @@
+.header {
+    background-color: #d7d6d4;
+    padding: 30px;
+    color: black;
+}
+
+.header .container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+}
+
+.header .logo img {
+    width: 100%;
+}
+
+.header .logo,
+.header .contactInfo {
+    width: 20%;
+}
+
+.contactPara p {
+    margin: 0;
+    width: 100%;
+    text-align: left;
+}
+
+.contactPara p a {
+    color: black;
+    text-decoration: none;
+}
+
+.contactInfoSubDiv {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.contactInfoSubDiv .contactIcon {
+    width: 20%;
+}
+
+.contactInfoSubDiv .contactPara {
+    width: 70%;
+}
+
+.nav {
+    width: 40%;
+}
+
+.nav nav ul {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.nav nav ul li {
+    list-style: none;
+    cursor: pointer;
+    color: black;
+    font-weight: 600;
+}
+
+.nav nav ul li a {
+    text-decoration: none;
+}
+
+.nav nav ul li:hover {
+    color: red;
+}
+
+.nav nav ul li a:visited {
+    color: black;
+    text-decoration: none;
+}
+
+.nav nav ul li a.active {
+    text-decoration: none;
+    color: red;
+}
+
+.nav nav ul li a.nav-links:hover {
+    text-decoration: none;
+    color: red;
+}
+
+.header .nav {
+    padding-left: 0px !important;
+}
+
+.header .nav nav {
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .nav {
+        display: none !important;
+    }
+
+    .contactInfo {
+        display: none !important;
+    }
+
+    .topBannerHome .container {
+        margin-top: 55px !important;
+    }
+
+    .header .logo,
+    .header .contactInfo {
+        width: 50%;
+    }
+}
