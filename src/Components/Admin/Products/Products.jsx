@@ -11,6 +11,8 @@ function Products() {
     const [loading, setLoading] = useState(true);
     const [products, setProducts] = useState([]);
     const [errors, setErrors] = useState();
+    const [selectAll, setSelectAll] = useState(false);
+    const [selectedOption, setSelectedOption] = useState('');
     const fetchProducts = () => {
         setLoading(true);
         axiosClient.get('/products/all')
@@ -73,6 +75,65 @@ function Products() {
                 setLoading(false);
             })
     }
+    const handleOptionChange = (event) => {
+        setSelectedOption(event.target.value);
+    };
+    const handleSelectAll = (event) => {
+        const isChecked = event.target.checked;
+        setSelectAll(isChecked); // Update the checked state for all checkboxes in the tbody
+        const updatedProducts = products.map(product => {
+            return { ...product, isChecked };
+        });
+
+        setProducts(updatedProducts);
+    };
+
+
+    const handleCheckboxChange = (event, productId) => {
+        const isChecked = event.target.checked;
+
+
+        const updatedProducts = products.map(product => {
+            if (product.id === productId) {
+                return { ...product, isChecked };
+            }
+            return product;
+        });
+
+        setProducts(updatedProducts);
+    };
+    const handleApply = () => {
+        Swal.fire({
+            title: "Are you sure?",
+            text: `You want to ${selectedOption} selected products?`,
+            showDenyButton: false,
+            showCancelButton: true,
+            confirmButtonText: "Yes",
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const selectedIds = products.filter(product => product.isChecked).map(product => product.id);
+                setLoading(true);
+                axiosClient.post('/products/bulk-action', {
+                    action: selectedOption,
+                    product_ids: selectedIds,
+                })
+                    .then(({ data }) => {
+                        console.log(data);
+                        setSelectedOption('');
+                        fetchProducts();
+                        setLoading(false);
+                        Swal.fire(data.message, "", "success");
+                    })
+                    .catch(error => {
+                        setLoading(false);
+                        console.error(error);
+                    });
+
+            } else if (result.isDenied) {
+                Swal.fire("Changes are not saved", "", "info");
+            }
+        })
+    }
     return (
         <AdminLayout>
             <div className='container-fluid dashboard-content'>
@@ -80,11 +141,29 @@ function Products() {
                     <div className="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                         <div className="card">
                             <h5 className="card-header">Products</h5>
+                            <div className="col-lg-6 mt-3">
+                                <div class="row">
+                                    <div class="col-lg-6 col-sm-12">
+                                        <div id="bulkOptionContainer" class="col-xs-4">
+                                            <select class="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
+                                                <option value="">Select Options</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
+                                                <option value="delete">Delete</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-4 col-lg-3">
+                                        <input onClick={handleApply} type="submit" name="submit" class="btn btn-success" value="Apply" id="applyCheckbox" />
+                                    </div>
+                                </div>
+                            </div>
                             <div className="card-body">
                                 <div className="table-responsive">
                                     <table className="table table-striped table-bordered first">
                                         <thead>
                                             <tr>
+                                                <th><input id="selectAllBoxes" type="checkbox" onChange={handleSelectAll} checked={selectAll} /></th>
                                                 <th>S.No</th>
                                                 <th>Product Name</th>
                                                 <th>User</th>
@@ -103,6 +182,15 @@ function Products() {
                                                 products.length > 0 ? (
                                                     products.map((product, index) => (
                                                         <tr key={index}>
+                                                            <td>
+                                                                <input
+                                                                    className="allCheckboxes"
+                                                                    type="checkbox"
+                                                                    value={product.id}
+                                                                    checked={product.isChecked}
+                                                                    onChange={(event) => handleCheckboxChange(event, product.id)}
+                                                                />
+                                                            </td>
                                                             <td>{index + 1}</td>
                                                             <td>{product.product_name}</td>
                                                             <td>{product.user.name}</td>

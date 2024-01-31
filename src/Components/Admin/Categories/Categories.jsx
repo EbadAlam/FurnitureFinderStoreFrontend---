@@ -133,17 +133,17 @@ function Categories() {
                                 </div>
                             </div>
                             <div className="col-lg-6 mt-3">
-                                <div class="row">
-                                    <div class="col-lg-6 col-sm-12">
-                                        <div id="bulkOptionContainer" class="col-xs-4">
-                                            <select class="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
+                                <div className="row">
+                                    <div className="col-lg-6 col-sm-12">
+                                        <div id="bulkOptionContainer" className="col-xs-4">
+                                            <select className="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
                                                 <option value="">Select Options</option>
                                                 <option value="delete">Delete</option>
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-xs-4 col-lg-3">
-                                        <input onClick={handleApply} type="submit" name="submit" class="btn btn-success" value="Apply" id="applyCheckbox" />
+                                    <div className="col-xs-4 col-lg-3">
+                                        <input onClick={handleApply} type="submit" name="submit" className="btn btn-success" value="Apply" id="applyCheckbox" />
                                     </div>
                                 </div>
                             </div>

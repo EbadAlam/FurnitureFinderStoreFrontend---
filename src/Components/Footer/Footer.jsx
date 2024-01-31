@@ -16,7 +16,7 @@ function Footer() {
             </div>
             <div className="inputForm">
                 <input type="email" className='emailInput' placeholder='Enter Your Email Address' />
-                <button className='btn'>SUBSCRIBE</button>
+                <button className='btncs'>SUBSCRIBE</button>
             </div>
             <div className="container footerNav">
                 <div className="footerNavSubDiv">

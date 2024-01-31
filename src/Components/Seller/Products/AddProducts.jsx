@@ -120,6 +120,7 @@ function SellerAddProduct() {
                                         <div class="form-group">
                                             <label for="inputText3" class="col-form-label">Select Category</label>
                                             <select class="form-control" name="category" value={selectedCategory} onChange={handleCategoryChange}>
+                                                <option value="">Select Category</option>
                                                 {categories && categories.length > 0 && (
                                                     categories.map((cat) => (
                                                         <option value={cat.id}>{cat.cat_title}</option>

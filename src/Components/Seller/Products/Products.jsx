@@ -10,7 +10,7 @@ import SellerLayout from '../Layout/Layout';
 import { ToastContainer, toast } from 'react-toastify';
 
 function SellerProducts() {
-    const { user } = useStateContext();
+    const { user, truncateText } = useStateContext();
     const [loading, setLoading] = useState(false);
     const [products, setProducts] = useState([]);
     const [errors, setErrors] = useState();
@@ -144,13 +144,6 @@ function SellerProducts() {
         }
     }
 
-    function truncateText(text, maxLength) {
-        if (text.length <= maxLength) {
-            return text;
-        } else {
-            return text.substring(0, maxLength) + '...';
-        }
-    }
     return (
         <SellerLayout>
             <ToastContainer />
@@ -215,7 +208,7 @@ function SellerProducts() {
                                                                 />
                                                             </td>
                                                             <td>{index + 1}</td>
-                                                            <td>{product.product_name}<span class="badge badge-secondary ml-3">{product.product_status}</span></td>
+                                                            <td>{product.product_name}<span class="badge badge-primary ml-3">{product.product_status}</span></td>
                                                             <td>{truncateText(product.product_description, 10)}</td>
                                                             <td>{product.category.cat_title}</td>
                                                             <td>{product.product_stock_status}</td>

@@ -26,12 +26,20 @@ export const ContextProvider = ({ children }) => {
             localStorage.removeItem("user_data");
         }
     }
+    function truncateText(text, maxLength) {
+        if (text.length <= maxLength) {
+            return text;
+        } else {
+            return text.substring(0, maxLength) + '...';
+        }
+    }
     return (
         <StateContext.Provider value={{
             user,
             token,
             setUser,
             setToken,
+            truncateText,
         }}>
             {children}
         </StateContext.Provider>

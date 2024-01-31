@@ -10,6 +10,9 @@ const Layout = ({ children }) => {
     if (token && user.role == 'master-admin') {
         return (<Navigate to="/admin/dashboard" />)
     }
+    if (token && user.role == 'seller') {
+        return (<Navigate to="/seller/dashboard" />)
+    }
     return (
         <div className="layout">
             <Header />
