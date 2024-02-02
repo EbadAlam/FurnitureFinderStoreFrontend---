@@ -54,6 +54,15 @@ function Signup() {
                     }, 3500);
 
                 } else {
+                    localStorage.setItem('user_email', JSON.stringify(data.user.email));
+                    axiosClient.get(`/user/${data.user.email}`)
+                        .then(({ data }) => {
+                            console.log(data.user);
+                            setUser(data.user);
+                        })
+                        .catch((errr) => {
+                            console.error(errr);
+                        })
                     setUser(data.user);
                     setToken(data.access_token);
                     setLoading(false);

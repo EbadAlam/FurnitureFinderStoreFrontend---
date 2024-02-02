@@ -24,6 +24,7 @@ function Header() {
             .then(() => {
                 setToken(null);
                 setUser({});
+                localStorage.removeItem('user_email');
                 setLoading(false);
             })
             .catch((err) => {
@@ -34,7 +35,11 @@ function Header() {
     return (
         <div class="dashboard-header">
             <nav class="navbar navbar-expand-lg bg-white fixed-top">
-                <NavLink class="navbar-brand" to="/seller/dashboard">Furniture Finder Store</NavLink>
+                <NavLink class="navbar-brand" to="/seller/dashboard">
+                    <a href="#" className='navbar-brand'>
+                        Furniture Finder Store
+                    </a>
+                </NavLink>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
@@ -54,7 +59,11 @@ function Header() {
                                             <h5 class="mb-0 text-white nav-user-name">{user.name}</h5>
                                             <span class="status"></span><span class="ml-2">Available</span>
                                         </div>
-                                        <a class="dropdown-item" href="#"><i class="fas fa-user mr-2"></i>Account</a>
+                                        <NavLink to="/seller/account">
+                                            <a class="dropdown-item" href="#">
+                                                <i class="fas fa-user mr-2"></i>Account
+                                            </a>
+                                        </NavLink>
                                         <a class="dropdown-item" href="#"><i class="fas fa-cog mr-2"></i>Setting</a>
                                         <a onClick={adminLogout} style={{ cursor: 'pointer' }} class="dropdown-item"><i class="fas fa-power-off mr-2"></i>Logout</a>
                                     </div>

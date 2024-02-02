@@ -8,8 +8,7 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 function SellerLayout({ children }) {
-    const { token } = useStateContext();
-    const user = JSON.parse(localStorage.getItem('user_data'))
+    const { token, user } = useStateContext();
     if (token) {
         if (user.role == 'seller') {
             return (

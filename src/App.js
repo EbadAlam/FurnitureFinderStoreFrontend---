@@ -16,41 +16,67 @@ import SellerDashboard from './Components/Seller/Dashboard/Dashboard';
 import SellerProducts from './Components/Seller/Products/Products';
 import SellerEditProduct from './Components/Seller/Products/EditProducts';
 import SellerAddProduct from './Components/Seller/Products/AddProducts';
+import axiosClient from './axios-client';
+import { useStateContext } from './contexts/ContextProvider';
+import SellerAccount from './Components/Seller/SellerAccount/SellerAccount';
 
 function App() {
   const [categories, setCategories] = useState();
   const [_error, setError] = useState();
-    useEffect(() => {
-    fetchData();
-}, []);
-const fetchData = async () => {
-    try {
-        const apiUrl = process.env.REACT_APP_API_BASE_URL || process.env.API_BASE_URL;
-        const response = await fetch(`${apiUrl}/categories/all`);
-
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-
-        const result = await response.json();
-        setCategories(result.categories);
-    } catch (error) {
-        setError(error);
-        console.error(_error);
-    }
-};
-  return (
+  const {setUser,token} = useStateContext();
     
+const fetchUser = () => {
+  if (token) {
+  
+  axiosClient.get(`/user/${JSON.parse(localStorage.getItem('user_email'))}`)
+    .then(({ data }) => {
+      if (data && data.user) {
+        setUser(data.user);
+      } else {
+        setUser(null); 
+      }
+    })
+    .catch((errr) => {
+        console.error(errr);
+    })
+  }
+}
+const fetchData = async () => {
+  axiosClient.get('/categories/all')
+  .then(({data}) => {
+    setCategories(data.categories);
+  })
+  .catch((err) => {
+    console.error(err);
+  })
+    // try {
+    //     const apiUrl = process.env.REACT_APP_API_BASE_URL || process.env.API_BASE_URL;
+    //     const response = await fetch(`${apiUrl}/categories/all`);
+
+    //     if (!response.ok) {
+    //         throw new Error('Network response was not ok');
+    //     }
+
+    //     const result = await response.json();
+    //     setCategories(result.categories);
+    // } catch (error) {
+    //     setError(error);
+    //     console.error(_error);
+    // }
+};
+useEffect(() => {
+  fetchData();
+  fetchUser();
+}, []);
+  return (
     <Router className="App">
       <Routes>
         <Route path="/" element={<Home />} />
-        
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="*" element={<NotFound />} />
         {/* Master Admin Routes */}
-
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/users" element={<Users />} />
         <Route path="/admin/categories" element={<Categories />} />
@@ -63,6 +89,7 @@ const fetchData = async () => {
         <Route path="/seller/products" element={<SellerProducts />} />
         <Route path="/seller/products/add" element={<SellerAddProduct />} />
         <Route path="/seller/products/edit/:productId" element={<SellerEditProduct />} />
+        <Route path="/seller/account" element={<SellerAccount />} />
         {/* Category Routes */}
         {categories && categories.length > 0 && (
           categories.map((category) => (

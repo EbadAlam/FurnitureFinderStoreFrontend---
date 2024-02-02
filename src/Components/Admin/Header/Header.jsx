@@ -23,6 +23,8 @@ function Header() {
             .then(() => {
                 setToken(null);
                 setUser({});
+                localStorage.removeItem('user_email');
+
                 setLoading(false);
             })
             .catch((err) => {

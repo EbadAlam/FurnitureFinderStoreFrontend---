@@ -1,12 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react'
 import axiosClient from '../../../axios-client';
-import { useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import Loader from '../../Loader/Loader';
 import Swal from 'sweetalert2';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import SellerLayout from '../Layout/Layout';
 function SellerAddProduct() {
     const { user } = useStateContext();
+
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
     const [errors, setErrors] = useState();
@@ -95,6 +96,9 @@ function SellerAddProduct() {
     useEffect(() => {
         fetchCategories();
     }, [])
+    if (user.user_detail === null || user.store_locations === null || user.email_status === 'non-verified') {
+        return (<Navigate to="/seller/dashboard" />)
+    }
     return (
         <SellerLayout>
             <div className='container-fluid dashboard-content'>

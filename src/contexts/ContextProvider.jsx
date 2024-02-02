@@ -7,7 +7,7 @@ const StateContext = createContext({
 
 
 export const ContextProvider = ({ children }) => {
-    const [user, _setUser] = useState(JSON.parse(localStorage.getItem('user_data')));
+    const [user, _setUser] = useState({});
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
 
     const setToken = (token) => {
@@ -19,11 +19,10 @@ export const ContextProvider = ({ children }) => {
         }
     }
     const setUser = (user) => {
-        _setUser(user);
         if (user) {
-            localStorage.setItem('user_data', JSON.stringify(user));
+            _setUser(user);
         } else {
-            localStorage.removeItem("user_data");
+            _setUser({});
         }
     }
     function truncateText(text, maxLength) {

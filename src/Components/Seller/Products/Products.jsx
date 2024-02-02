@@ -3,7 +3,7 @@ import Loader from '../../Loader/Loader'
 import axiosClient from '../../../axios-client';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Navigate } from 'react-router-dom';
 import NoData from '../NoData/NoData';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import SellerLayout from '../Layout/Layout';
@@ -44,8 +44,8 @@ function SellerProducts() {
                 setLoading(true);
                 axiosClient.delete(`/seller/products/delete/${id}`)
                     .then(() => {
-                        fetchProducts();
                         setLoading(false);
+                        fetchProducts();
                     })
                     .catch((e) => {
                         console.error(e);
@@ -108,7 +108,6 @@ function SellerProducts() {
                             setLoading(false);
                             setSelectedOption('');
                             fetchProducts();
-                            // Swal.fire(`${data.message}`, "", "success");
                             toast(data.message, {
                                 position: "top-right",
                                 autoClose: 5000,
@@ -143,7 +142,9 @@ function SellerProducts() {
             });
         }
     }
-
+    if (user.user_detail === null || user.store_locations === null || user.email_status === 'non-verified') {
+        return (<Navigate to="/seller/dashboard" />)
+    }
     return (
         <SellerLayout>
             <ToastContainer />
