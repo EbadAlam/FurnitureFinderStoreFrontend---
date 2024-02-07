@@ -20,10 +20,17 @@ function SideBar() {
                                 <NavLink className="nav-link active" to="/seller/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
                             </li>
                             <li className="nav-item ">
-                                {user.user_detail === null || user.store_locations === null || user.email_status === 'non-verified' ? (
-                                    <NavLink className="nav-link" to="/seller/products"><i className="fa fa-fw fa-table"></i> Products</NavLink>
-                                ) : (
+                                {user.store_detail === null || user.store_locations === null || user.email_status === 'non-verified' ? (
                                     <span className="nav-link"><i className="fa fa-fw fa-table"></i> Products</span>
+                                ) : (
+                                    <NavLink className="nav-link" to="/seller/products"><i className="fa fa-fw fa-table"></i> Products</NavLink>
+                                )}
+                            </li>
+                            <li className="nav-item ">
+                                {user.store_detail === null || user.store_locations === null || user.email_status === 'non-verified' ? (
+                                    <span className="nav-link"><i className="fa fa-fw fa-users"></i> Managers</span>
+                                ) : (
+                                    <NavLink className="nav-link" to="/seller/managers"><i className="fa fa-fw fa-users"></i> Managers</NavLink>
                                 )}
                             </li>
                         </ul>

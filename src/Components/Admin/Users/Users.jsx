@@ -9,18 +9,17 @@ import { NavLink } from 'react-router-dom';
 
 function Users() {
     const [loading, setLoading] = useState(true);
-    const [users, setUsers] = useState([]);
-    const [errors, setErrors] = useState();
+    const [users, setUsers] = useState({});
     const [selectAll, setSelectAll] = useState(false);
     const fetchUsers = () => {
         setLoading(true);
-        axiosClient.get('/user/getusers')
-            .then((data) => {
-                setUsers(data.data[1]);
+        axiosClient.get('/user/all')
+            .then(({ data }) => {
+                console.log(data, 'users');
+                setUsers(data.users);
                 setLoading(false);
             })
             .catch((e) => {
-                setErrors(e);
                 console.error(e);
                 setLoading(false);
             })
@@ -46,7 +45,6 @@ function Users() {
                     })
                     .catch((e) => {
                         console.error(e);
-                        setErrors(e);
                         setLoading(false);
                         Swal.fire("An error occured", "", "info");
                     })
@@ -54,21 +52,15 @@ function Users() {
                 Swal.fire("Changes are not saved", "", "info");
             }
         });
-
-    }
-    const userEdit = (user) => {
-        console.log(user);
     }
     const userActiveInactive = (user) => {
         setLoading(true);
-        setErrors(null);
         axiosClient.put(`/user/activeinactive/${user.id}`)
-            .then((data) => {
-                // console.log(data.data.status);
+            .then(({ data }) => {
                 Swal.fire({
                     position: "top-end",
                     icon: "success",
-                    title: `${user.name} status updated to ${data.data.status}`,
+                    title: `${user.name} status updated to ${data.status}`,
                     showConfirmButton: false,
                     timer: 1500
                 });
@@ -78,20 +70,18 @@ function Users() {
             .catch((err) => {
                 console.error(err);
                 setLoading(false);
-                setErrors(err);
             })
     }
 
     const handleSelectAll = (event) => {
         const isChecked = event.target.checked;
-        setSelectAll(isChecked); // Update the checked state for all checkboxes in the tbody
+        setSelectAll(isChecked);
         const updatedUsers = users.map(user => {
             return { ...user, isChecked };
         });
 
         setUsers(updatedUsers);
     };
-
 
     const handleCheckboxChange = (event, userId) => {
         const isChecked = event.target.checked;
@@ -111,7 +101,6 @@ function Users() {
         setSelectedOption(event.target.value);
     };
     const handleApply = () => {
-        // if (selectedOption === 'delete') {
         Swal.fire({
             title: "Are you sure?",
             text: `You want to ${selectedOption} selected users?`,
@@ -142,7 +131,6 @@ function Users() {
                 Swal.fire("Changes are not saved", "", "info");
             }
         })
-        // }
     }
     return (
         <AdminLayout>
@@ -209,17 +197,17 @@ function Users() {
                                                             <td>{user.role}</td>
                                                             <td>{user.account_status}</td>
                                                             <td>
-                                                                {user.role == process.env.REACT_APP_ROLE_MASTER_ADMIN ? (
-                                                                    <button className='btn btn-dark' disabled>{user.account_status == 'Active' ? 'Inactive' : 'Active'}</button>
+                                                                {user.role === process.env.REACT_APP_ROLE_MASTER_ADMIN ? (
+                                                                    <button className='btn btn-dark' disabled>{user.account_status === 'Active' ? 'Inactive' : 'Active'}</button>
                                                                 ) : (
-                                                                    <button onClick={() => userActiveInactive(user)} className='btn btn-dark'>{user.account_status == 'Active' ? 'Inactive' : 'Active'}</button>
+                                                                    <button onClick={() => userActiveInactive(user)} className='btn btn-dark'>{user.account_status === 'Active' ? 'Inactive' : 'Active'}</button>
                                                                 )}
                                                             </td>
                                                             <td>
                                                                 <NavLink className='btn btn-success' to={`/admin/users/edit/${user.id}`}>Edit</NavLink>
                                                             </td>
                                                             <td>
-                                                                {user.role == process.env.REACT_APP_ROLE_MASTER_ADMIN ? (
+                                                                {user.role === process.env.REACT_APP_ROLE_MASTER_ADMIN ? (
                                                                     <button className='btn btn-danger' disabled>Delete</button>
                                                                 ) : (
                                                                     <button className='btn btn-danger' onClick={() => userDelete(user.id)}>Delete</button>

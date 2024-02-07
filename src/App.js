@@ -3,6 +3,7 @@ import Home from './Components/Home/Home';
 import About from './Components/About/About';
 import NotFound from './Components/NotFound/NotFound';
 import CategoryPage from './Components/CategoryPage/CategoryPage';
+import { useStateContext } from './contexts/ContextProvider';
 import { useEffect, useState } from 'react';
 import Signup from './Components/Signup/Signup';
 import Dashboard from './Components/Admin/Dashboard/Dashboard';
@@ -17,28 +18,21 @@ import SellerProducts from './Components/Seller/Products/Products';
 import SellerEditProduct from './Components/Seller/Products/EditProducts';
 import SellerAddProduct from './Components/Seller/Products/AddProducts';
 import axiosClient from './axios-client';
-import { useStateContext } from './contexts/ContextProvider';
 import SellerAccount from './Components/Seller/SellerAccount/SellerAccount';
+import EmailVerification from './Components/Seller/EmailVerification/EmailVerification';
+import SellerManagers from './Components/Seller/Managers/Managers';
+import SellerAddManagers from './Components/Seller/Managers/AddManagers';
+import ManagerDashboard from './Components/Manager/Dashboard/Dashboard';
+import ManagerProducts from './Components/Manager/Products/Products';
+import ManagerAddProduct from './Components/Manager/Products/AddProducts';
 
 function App() {
   const [categories, setCategories] = useState();
-  const [_error, setError] = useState();
-  const {setUser,token} = useStateContext();
+  const {fetchUserData,token} = useStateContext();
     
 const fetchUser = () => {
   if (token) {
-  
-  axiosClient.get(`/user/${JSON.parse(localStorage.getItem('user_email'))}`)
-    .then(({ data }) => {
-      if (data && data.user) {
-        setUser(data.user);
-      } else {
-        setUser(null); 
-      }
-    })
-    .catch((errr) => {
-        console.error(errr);
-    })
+    fetchUserData();
   }
 }
 const fetchData = async () => {
@@ -49,20 +43,6 @@ const fetchData = async () => {
   .catch((err) => {
     console.error(err);
   })
-    // try {
-    //     const apiUrl = process.env.REACT_APP_API_BASE_URL || process.env.API_BASE_URL;
-    //     const response = await fetch(`${apiUrl}/categories/all`);
-
-    //     if (!response.ok) {
-    //         throw new Error('Network response was not ok');
-    //     }
-
-    //     const result = await response.json();
-    //     setCategories(result.categories);
-    // } catch (error) {
-    //     setError(error);
-    //     console.error(_error);
-    // }
 };
 useEffect(() => {
   fetchData();
@@ -90,6 +70,15 @@ useEffect(() => {
         <Route path="/seller/products/add" element={<SellerAddProduct />} />
         <Route path="/seller/products/edit/:productId" element={<SellerEditProduct />} />
         <Route path="/seller/account" element={<SellerAccount />} />
+        <Route path="/seller/managers" element={<SellerManagers />} />
+        <Route path="/seller/managers/add" element={<SellerAddManagers />} />
+        {/* Manager Routes */}
+        <Route path="/manager/dashboard" element={<ManagerDashboard />} />
+        <Route path="/manager/products" element={<ManagerProducts />} />
+        <Route path="/manager/products/add" element={<ManagerAddProduct />} />
+        {/* <Route path="/seller/account" element={<SellerAccount />} /> */}
+        {/* Email Verification Route */}
+        <Route path="/user/emailverification/:email/:_token" element={<EmailVerification />} />
         {/* Category Routes */}
         {categories && categories.length > 0 && (
           categories.map((category) => (

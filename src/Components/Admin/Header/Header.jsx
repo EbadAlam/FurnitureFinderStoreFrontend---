@@ -24,7 +24,6 @@ function Header() {
                 setToken(null);
                 setUser({});
                 localStorage.removeItem('user_email');
-
                 setLoading(false);
             })
             .catch((err) => {

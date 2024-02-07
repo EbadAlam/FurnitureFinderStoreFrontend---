@@ -13,7 +13,7 @@ function Signup() {
     const Navigate = useNavigate();
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { setUser, setToken, token } = useStateContext();
+    const { fetchUserData, setToken, token } = useStateContext();
     const emailRefLogin = useRef();
     const passwordRefLogin = useRef();
     const nameRefSignup = useRef();
@@ -37,7 +37,7 @@ function Signup() {
         setErrors(null);
         axiosClient.post('/login', payload)
             .then(({ data }) => {
-                if (data.user.account_status == 'Inactive') {
+                if (data.user.account_status === 'Inactive') {
                     setLoading(false);
                     toast('Account Inactive. Please contact admin', {
                         position: "top-right",
@@ -55,35 +55,41 @@ function Signup() {
 
                 } else {
                     localStorage.setItem('user_email', JSON.stringify(data.user.email));
-                    axiosClient.get(`/user/${data.user.email}`)
-                        .then(({ data }) => {
-                            console.log(data.user);
-                            setUser(data.user);
-                        })
-                        .catch((errr) => {
-                            console.error(errr);
-                        })
-                    setUser(data.user);
+                    fetchUserData();
                     setToken(data.access_token);
                     setLoading(false);
-                    Navigate('/');
+                    toast(data.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                    // Navigate('/');
                 }
             })
             .catch(error => {
                 const response = error.response;
-                if (response && response.status === 422 || response.status === 401) {
-                    if (response.data.errors) {
-                        setErrors(response.data.errors);
-                    } else {
-                        setErrors({
-                            email: [response.data.message],
-                        })
+                if (response) {
+                    if (response.status === 422 || response.status === 401) {
+
+
+                        if (response.data.errors) {
+                            setErrors(response.data.errors);
+                        } else {
+                            setErrors({
+                                email: [response.data.message],
+                            })
+                        }
+                        setInterval(() => {
+                            setErrors(null);
+                        }, 3500);
                     }
-                    setInterval(() => {
-                        setErrors(null);
-                    }, 3500);
+                    setLoading(false);
                 }
-                setLoading(false);
             })
     }
     const SignupFormSubmit = (e) => {
@@ -100,26 +106,30 @@ function Signup() {
         axiosClient.post('/signup', payloadSignup)
             .then(() => {
                 setLoading(false);
+                setRole(null);
                 Navigate('/');
             })
             .catch(error => {
                 const response = error.response;
-                if (response && response.status === 422 || response.status === 401) {
-                    if (response.data.errors) {
-                        setErrors(response.data.errors);
-                    } else {
-                        setErrors({
-                            email: [response.data.message],
-                        })
+                if (response) {
+                    if (response.status === 422 || response.status === 401) {
+
+
+                        if (response.data.errors) {
+                            setErrors(response.data.errors);
+                        } else {
+                            setErrors({
+                                email: [response.data.message],
+                            })
+                        }
+                        setInterval(() => {
+                            setErrors(null);
+                        }, 3000);
                     }
-                    setInterval(() => {
-                        setErrors(null);
-                    }, 3000);
+                    setLoading(false);
+                    setRole(null);
                 }
-                setLoading(false);
             })
-        setRole(null);
-        setLoading(false);
     }
     const handleChangeRole = (value) => {
         setRole(value);

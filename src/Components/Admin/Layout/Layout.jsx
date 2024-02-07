@@ -8,30 +8,30 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 function AdminLayout({ children }) {
-    const { token } = useStateContext();
-    const user = JSON.parse(localStorage.getItem('user_data'))
-    if (token) {
-        if (user.role == 'master-admin') {
-            return (
-                <>
-                    <div className='dashboard-main-wrapper'>
-                        <Header />
-                        <SideBar />
-                        <div className='dashboard-wrapper'>
-                            {children}
-                            <Footer />
+    const { token, user, _loading } = useStateContext();
+    if (_loading === false) {
+        if (token) {
+            if (user.role == process.env.REACT_APP_ROLE_MASTER_ADMIN) {
+                return (
+                    <>
+                        <div className='dashboard-main-wrapper'>
+                            <Header />
+                            <SideBar />
+                            <div className='dashboard-wrapper'>
+                                {children}
+                                <Footer />
+                            </div>
                         </div>
-                    </div>
 
-                </>
-            )
+                    </>
+                )
+            } else {
+                return (<Navigate to="/" />)
+            }
         } else {
-            return (<Navigate to="/" />)
+            return (<Navigate to="/login" />)
         }
-    } else {
-        return (<Navigate to="/login" />)
     }
-
 }
 
 export default AdminLayout

@@ -6,11 +6,17 @@ import { ToastContainer, toast } from 'react-toastify';
 import Loader from '../../Loader/Loader';
 import { DeleteOutlined, CloseCircleFilled, SafetyCertificateFilled } from '@ant-design/icons';
 import Swal from 'sweetalert2';
+// import { useNavigate } from 'react-router-dom';
 
 function SellerAccount() {
-    const { user, setUser } = useStateContext();
+    // const Navigate = useNavigate();
+
+    const { user, fetchUserData } = useStateContext();
     const [stL, setStL] = useState(false);
     const [stIm, setStIm] = useState(false);
+    const [stAd, setStAd] = useState(false);
+    const [ll, setLl] = useState(false);
+    const addressRef = useRef();
     const storeLocationRef = useRef();
     const storeLocationImageRef = useRef();
     const [loading, setLoading] = useState(false);
@@ -21,14 +27,8 @@ function SellerAccount() {
     const toggleStIm = () => {
         setStIm(!stIm);
     }
-    const getUser = () => {
-        axiosClient.get(`/user/${JSON.parse(localStorage.getItem('user_email'))}`)
-            .then(({ data }) => {
-                setUser(data.user);
-            })
-            .catch((err) => {
-                console.error(err);
-            })
+    const toggleStAd = () => {
+        setStAd(!stAd);
     }
     const storeLocationRequest = () => {
         setLoading(true);
@@ -50,7 +50,7 @@ function SellerAccount() {
                 });
                 setStL(false);
                 setLoading(false);
-                getUser();
+                fetchUserData();
             })
             .catch((err) => {
                 setLoading(false);
@@ -69,7 +69,7 @@ function SellerAccount() {
                 setLoadingFullPage(true);
                 axiosClient.delete(`/seller/products/locationstore/delete/${id}`)
                     .then(({ data }) => {
-                        getUser();
+                        fetchUserData();
                         setLoadingFullPage(false);
                         toast(data.message, {
                             position: "top-right",
@@ -104,7 +104,7 @@ function SellerAccount() {
             }
         })
             .then(({ data }) => {
-                getUser();
+                fetchUserData();
                 toast(data.message, {
                     position: "top-right",
                     autoClose: 5000,
@@ -133,15 +133,72 @@ function SellerAccount() {
                 });
             });
     }
+    const addressRequest = () => {
+        setLoading(true);
+        const addressPayload = {
+            address: addressRef.current.value,
+        }
+        axiosClient.post(`/seller/products/addaddress/${user.id}`, addressPayload)
+            .then(({ data }) => {
+                setStAd(false);
+                setLoading(false);
+                fetchUserData();
+                toast(data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.error(err);
+            })
+    }
     const verifyEmailHandler = () => {
-
+        setLl(true);
+        axiosClient.post(`/user/emailtokencheck/${user.email}`)
+            .then(({ data }) => {
+                setLl(false);
+                toast(data.message, {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            })
+            .catch((err) => {
+                setLl(false);
+                console.log(err, 'error');
+                toast("An error occured", {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+            })
     }
     useEffect(() => {
-        getUser();
+        fetchUserData();
     }, [])
     return (
         <SellerLayout>
             <ToastContainer />
+            {ll && (
+                <Loader fullScreen={true} />
+            )}
             <div className='container-fluid dashboard-content'>
                 <div className="card">
                     <h5 className="card-header">Account Information</h5>
@@ -152,8 +209,8 @@ function SellerAccount() {
                         </div>
                         <div className="form-group">
                             <label for="inputEmail">Email address</label>
-                            <span className={`badge badge-${user.email_status == 'non-verified' ? 'danger' : 'primary'} ml-3`}>{user.email_status == 'non-verified' ? <><CloseCircleFilled /> Non Verified</> : <><SafetyCertificateFilled /> Verified</>}</span>
-                            {user.email_status == 'non-verified' && (
+                            <span className={`badge badge-${user.email_status === 'non-verified' ? 'danger' : 'primary'} ml-3`}>{user.email_status === 'non-verified' ? <><CloseCircleFilled /> Non Verified</> : <><SafetyCertificateFilled /> Verified</>}</span>
+                            {user.email_status === 'non-verified' && (
                                 <a href="#" onClick={verifyEmailHandler} className='ml-2'>Verify Now</a>
                             )}
                             <input id="inputEmail" type="email" name='email' value={user.email} className="form-control" disabled />
@@ -162,40 +219,46 @@ function SellerAccount() {
                             <label for="inputText4" className="col-form-label">Phone Number</label>
                             <input id="inputText4" type="number" value={user.phone_number} className="form-control" name="phone_number" disabled />
                         </div>
+                        {user.store_detail && (
+                            <>
+                                <div className="form-group">
+                                    <label for="inputText4" className="col-form-label">Address</label>
+                                    <input id="inputText4" type="text" value={user.store_detail.address} className="form-control" name="address" disabled />
+                                </div>
 
-                        <div className="form-group">
-                            <label for="inputText4" className="col-form-label">Address</label>
-                            <input id="inputText4" type="text" value={user.store_detail.address} className="form-control" name="address" disabled />
-                        </div>
-                        <div className="form-group">
-                            <label for="inputText4" className="col-form-label">Store Image</label>
-                            {user.store_detail.store_image ? (
-                                <img style={{ width: '150px', display: 'block' }} src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${user.store_detail.store_image}`} alt="" />
-                            ) : (
-                                <p>No image added yet!</p>
-                            )}
-                        </div>
+                                <div className="form-group">
+                                    <label for="inputText4" className="col-form-label">Store Image</label>
+                                    {user.store_detail.store_image ? (
+                                        <img style={{ width: '150px', display: 'block' }} src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${user.store_detail.store_image}`} alt="" />
+                                    ) : (
+                                        <p>No image added yet!</p>
+                                    )}
+                                </div>
+                            </>
+                        )}
 
+                        {/* store locations */}
                         <div className="form-group">
                             <label for="inputText4" className="col-form-label">Store Location</label>
                             {loadingFullPage ? (
                                 <Loader fullScreen={false} />
                             ) : (
-                                user.store_locations.length > 0 && (
-                                    user.store_locations.map((lc) => (
-                                        <div class="p-3 mb-2 bg-light text-dark" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                            {lc.store_location}
-                                            <DeleteOutlined
-                                                style={{
-                                                    color: 'red',
-                                                    cursor: 'pointer',
-                                                    fontSize: '18px'
-                                                }}
-                                                onClick={() => deleteStoreLocation(lc.id)}
-                                            />
-                                        </div>
-                                    ))
-                                ))}
+                                user.store_locations && (
+                                    user.store_locations.length > 0 ? (
+                                        user.store_locations.map((lc) => (
+                                            <div class="p-3 mb-2 bg-light text-dark" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                                {lc.store_location}
+                                                <DeleteOutlined
+                                                    style={{
+                                                        color: 'red',
+                                                        cursor: 'pointer',
+                                                        fontSize: '18px'
+                                                    }}
+                                                    onClick={() => deleteStoreLocation(lc.id)}
+                                                />
+                                            </div>
+                                        ))
+                                    ) : (<p>No locations added</p>)))}
                         </div>
                     </div>
                     <div className="col-lg-12">
@@ -203,11 +266,19 @@ function SellerAccount() {
                             <div className="col-lg-3">
                                 <button onClick={toggleStL} className="btn btn-primary">Add Store Location</button>
                             </div>
-                            {!user.store_detail.store_image && (
+                            {
+                                !user.store_detail.store_image && (
+                                    <div className="col-lg-3">
+                                        <button onClick={toggleStIm} className="btn btn-primary">Add Store Image</button>
+                                    </div>
+                                )
+                            }
+                            {!user.store_detail.address && (
                                 <div className="col-lg-3">
-                                    <button onClick={toggleStIm} className="btn btn-primary">Add Store Image</button>
+                                    <button onClick={toggleStAd} className="btn btn-primary">Add Address</button>
                                 </div>
-                            )}
+                            )
+                            }
                         </div>
                     </div>
                     <div className="card-body">
@@ -248,6 +319,24 @@ function SellerAccount() {
                                         </div>
                                         <div className="form-group">
                                             <button type='submit' className='btn btn-primary'>Upload</button>
+                                        </div>
+                                    </form>
+                                )}
+                                {stAd && (
+                                    <form onSubmit={addressRequest}>
+                                        <div className="form-group">
+                                            <label htmlFor="inputText4" className="col-form-label">Address</label>
+                                            <input
+                                                id="inputText4"
+                                                type="text"
+                                                ref={addressRef}
+                                                className="form-control"
+                                                name="address"
+                                                placeholder='Address'
+                                            />
+                                        </div>
+                                        <div className="form-group">
+                                            <button type='submit' className='btn btn-primary'>Update</button>
                                         </div>
                                     </form>
                                 )}

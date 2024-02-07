@@ -3,7 +3,6 @@ import axios from 'axios';
 const axiosClient = axios.create({
     baseURL: `${process.env.REACT_APP_LARAVEL_BASE_URL}/api`,
 })
-// console.log(process.env.REACT_APP_LARAVEL_BASE_URL,"api url");
 axiosClient.interceptors.request.use((config) => {
     const token = localStorage.getItem('ACCESS_TOKEN');
     config.headers.Authorization = `Bearer ${token}`;
@@ -13,6 +12,7 @@ axiosClient.interceptors.request.use((config) => {
 axiosClient.interceptors.response.use((response) => {
     return response;
 }, (error) => {
+    // debugger;
     const {response} = error;
     if(response.status === 401){
         localStorage.removeItem('ACCESS_TOKEN')

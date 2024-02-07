@@ -1,13 +1,16 @@
 import { createContext, useContext, useState } from "react";
+import axiosClient from "../axios-client";
 
 const StateContext = createContext({
     user: null,
     token: null,
+    loading: true,
 });
 
 
 export const ContextProvider = ({ children }) => {
     const [user, _setUser] = useState({});
+    const [_loading, setLoading] = useState(true);
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
 
     const setToken = (token) => {
@@ -17,6 +20,18 @@ export const ContextProvider = ({ children }) => {
         } else {
             localStorage.removeItem("ACCESS_TOKEN");
         }
+    }
+    const fetchUserData = () => {
+        setLoading(true);
+        axiosClient.get(`/user/${JSON.parse(localStorage.getItem('user_email'))}`)
+            .then(({ data }) => {
+                setUser(data.user);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
     }
     const setUser = (user) => {
         if (user) {
@@ -36,9 +51,11 @@ export const ContextProvider = ({ children }) => {
         <StateContext.Provider value={{
             user,
             token,
+            _loading,
             setUser,
             setToken,
             truncateText,
+            fetchUserData,
         }}>
             {children}
         </StateContext.Provider>

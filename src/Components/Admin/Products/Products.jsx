@@ -193,7 +193,7 @@ function Products() {
                                                             </td>
                                                             <td>{index + 1}</td>
                                                             <td>{product.product_name}</td>
-                                                            <td>{product.user.name}</td>
+                                                            <td>{product.add_by.name} <span className="badge badge-success">{product.add_by.position.position}</span></td>
                                                             <td>{product.product_price}</td>
                                                             <td>{product.product_status}</td>
                                                             <td>

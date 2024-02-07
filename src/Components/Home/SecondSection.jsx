@@ -58,16 +58,8 @@ function SecondSection() {
                 setLoading(false);
             })
     }
-    // function truncateText(text, maxLength) {
-    //     if (text.length <= maxLength) {
-    //         return text;
-    //     } else {
-    //         return text.substring(0, maxLength) + '...';
-    //     }
-    // }
     useEffect(() => {
         fetchProducts();
-        // console.log(products);
     }, [])
     return (
         <div className="sectionTwo">

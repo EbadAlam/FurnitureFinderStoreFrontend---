@@ -10,22 +10,26 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 function SellerLayout({ children }) {
     const { token, user } = useStateContext();
     if (token) {
-        if (user.role == 'seller') {
-            return (
-                <>
-                    <div className='dashboard-main-wrapper'>
-                        <Header />
-                        <SideBar />
-                        <div className='dashboard-wrapper'>
-                            {children}
-                            <Footer />
+        if (user) {
+            if (user.role === 'seller') {
+                return (
+                    <>
+                        <div className='dashboard-main-wrapper'>
+                            <Header />
+                            <SideBar />
+                            <div className='dashboard-wrapper'>
+                                {children}
+                                <Footer />
+                            </div>
                         </div>
-                    </div>
 
-                </>
-            )
+                    </>
+                )
+            } else {
+                return (<Navigate to="/" />)
+            }
         } else {
-            return (<Navigate to="/" />)
+            return (<Navigate to="/login" />)
         }
     } else {
         return (<Navigate to="/login" />)
