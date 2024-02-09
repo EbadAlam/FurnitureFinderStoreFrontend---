@@ -5,6 +5,7 @@ import { LeftOutlined, RightOutlined } from '@ant-design/icons';
 import { useStateContext } from '../../contexts/ContextProvider';
 import axiosClient from '../../axios-client';
 import Loader from '../Loader/Loader';
+import NoData from '../NoData/NoData';
 
 function ForthSection() {
     const { truncateText } = useStateContext();
@@ -12,7 +13,7 @@ function ForthSection() {
     const [products, setProducts] = useState({});
     const fetchProducts = () => {
         setLoading(true);
-        axiosClient.get('/products/all')
+        axiosClient.get('/homeproducts')
             .then(({ data }) => {
                 setProducts(data.products);
                 setLoading(false);
@@ -74,118 +75,36 @@ function ForthSection() {
                         <p className='paraHome'>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</p>
                     </div>
                     <div className="sliderSectionTwo">
-                        <Slider {...settings}>
-                            {products && products.length > 0 && (
-                                products.map((product) => (
-                                    product.product_status === 'Active' && (
-                                        <div className="slider" key={product.id}>
-                                            <div className="slidesImage">
-                                                <img src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${product.product_image}`} alt={product.product_name} />
-                                            </div>
-                                            <div className="slidesName">
-                                                <h3>{product.product_name}
-                                                    <span className={`badge badge-${product.product_stock_status == 'Available' ? 'info' : 'secondary'} ml-3`}>{product.product_stock_status}</span>
-                                                </h3>
-                                            </div>
-                                            <div className="slidesText">
-                                                <p>{truncateText(product.product_description, 40)}</p>
-                                            </div>
-                                            <div className="slidesDetailBtn">
-                                                <button>View Details</button>
-                                            </div>
+                        {products.length > 0 ? (
+                            <Slider {...settings}>
+                                {products.map((product) => (
+                                    <div className="slider" key={product.id}>
+                                        <div className="slidesImage">
+                                            <img src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${product.product_image}`} alt={product.product_name} />
                                         </div>
-                                    )
+                                        <div className="slidesName">
+                                            <h3>{product.product_name}
+                                                <span className={`badge badge-${product.product_stock_status == 'Available' ? 'info' : 'secondary'} ml-3`}>{product.product_stock_status}</span>
+                                            </h3>
+                                        </div>
+                                        <div className="slidesText">
+                                            <p>{truncateText(product.product_description, 40)}</p>
+                                        </div>
+                                        <div className="slidesDetailBtn">
+                                            <button>View Details</button>
+                                        </div>
+                                    </div>
                                 ))
-                            )}
-                            {/* <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div>
-                        <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div>
-                        <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div>
-                        <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div>
-                        <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div>
-                        <div className="slider">
-                            <div className="slidesImage">
-                                <img src="https://source.unsplash.com/collection/1163637/480x480" alt="Slider" />
-                            </div>
-                            <div className="slidesName">
-                                <h3>Product Name</h3>
-                            </div>
-                            <div className="slidesText">
-                                <p>Lorem ipsum is simply a dummy text.</p>
-                            </div>
-                            <div className="slidesDetailBtn">
-                                <button>View Details</button>
-                            </div>
-                        </div> */}
-                        </Slider>
+                                }
+                            </Slider>
+                        ) : (
+                            <NoData content={'No Products'} tag='h2' />
+                        )}
                     </div>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 

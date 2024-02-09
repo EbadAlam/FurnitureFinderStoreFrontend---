@@ -29,7 +29,7 @@ function AdminLayout({ children }) {
                 return (<Navigate to="/" />)
             }
         } else {
-            return (<Navigate to="/login" />)
+            return (<Navigate to="/signup" />)
         }
     }
 }

@@ -4,14 +4,14 @@ import axiosClient from "../axios-client";
 const StateContext = createContext({
     user: null,
     token: null,
-    loading: true,
+    loading: false,
 });
 
 
 export const ContextProvider = ({ children }) => {
     const [user, _setUser] = useState({});
-    const [_loading, setLoading] = useState(true);
     const [token, _setToken] = useState(localStorage.getItem("ACCESS_TOKEN"));
+    const [_loading, setLoading] = useState(token ? true : false);
 
     const setToken = (token) => {
         _setToken(token);
@@ -22,16 +22,18 @@ export const ContextProvider = ({ children }) => {
         }
     }
     const fetchUserData = () => {
-        setLoading(true);
-        axiosClient.get(`/user/${JSON.parse(localStorage.getItem('user_email'))}`)
-            .then(({ data }) => {
-                setUser(data.user);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error(err);
-                setLoading(false);
-            })
+        if (token) {
+            setLoading(true);
+            axiosClient.get(`/singleuser/${JSON.parse(localStorage.getItem('user_email'))}`)
+                .then(({ data }) => {
+                    setUser(data.user);
+                    setLoading(false);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setLoading(false);
+                })
+        }
     }
     const setUser = (user) => {
         if (user) {

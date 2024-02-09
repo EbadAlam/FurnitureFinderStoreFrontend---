@@ -4,12 +4,13 @@ import Loader from '../../Loader/Loader'
 import axiosClient from '../../../axios-client';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
-import NoData from '../NoData/NoData';
 import { NavLink } from 'react-router-dom';
+import NoData from '../../NoData/NoData';
+
 
 function Users() {
     const [loading, setLoading] = useState(true);
-    const [users, setUsers] = useState({});
+    const [_users, setUsers] = useState([]);
     const [selectAll, setSelectAll] = useState(false);
     const fetchUsers = () => {
         setLoading(true);
@@ -76,7 +77,7 @@ function Users() {
     const handleSelectAll = (event) => {
         const isChecked = event.target.checked;
         setSelectAll(isChecked);
-        const updatedUsers = users.map(user => {
+        const updatedUsers = _users.map(user => {
             return { ...user, isChecked };
         });
 
@@ -87,7 +88,7 @@ function Users() {
         const isChecked = event.target.checked;
 
 
-        const updatedUsers = users.map(user => {
+        const updatedUsers = _users.map(user => {
             if (user.id === userId) {
                 return { ...user, isChecked };
             }
@@ -109,7 +110,7 @@ function Users() {
             confirmButtonText: "Yes",
         }).then((result) => {
             if (result.isConfirmed) {
-                const selectedIds = users.filter(user => user.isChecked).map(user => user.id);
+                const selectedIds = _users.filter(user => user.isChecked).map(user => user.id);
                 setLoading(true);
                 axiosClient.post('/user/bulk-action', {
                     action: selectedOption,
@@ -166,6 +167,7 @@ function Users() {
                                                 <th>Name</th>
                                                 <th>Email</th>
                                                 <th>Role</th>
+                                                <th>Position</th>
                                                 <th>Status</th>
                                                 <th>Change Status</th>
                                                 <th>Edit</th>
@@ -176,8 +178,8 @@ function Users() {
                                             {loading ? (
                                                 <Loader fullScreen={false} />
                                             ) : (
-                                                users.length > 0 ? (
-                                                    users.map((user, index) => (
+                                                _users.length > 0 ? (
+                                                    _users.map((user, index) => (
 
                                                         <tr key={index}>
                                                             <td>
@@ -195,6 +197,7 @@ function Users() {
                                                             <td>{user.name}</td>
                                                             <td>{user.email}</td>
                                                             <td>{user.role}</td>
+                                                            <td>{user.position ? user.position.position : '---'}</td>
                                                             <td>{user.account_status}</td>
                                                             <td>
                                                                 {user.role === process.env.REACT_APP_ROLE_MASTER_ADMIN ? (
@@ -217,6 +220,7 @@ function Users() {
                                                     ))
                                                 ) : <NoData content={'NO USERS'} />
                                             )}
+
                                         </tbody>
                                     </table>
                                 </div>

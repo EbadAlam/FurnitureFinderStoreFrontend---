@@ -5,7 +5,7 @@ import axiosClient from '../../../axios-client';
 import { useEffect } from 'react';
 import Swal from 'sweetalert2';
 import { NavLink } from 'react-router-dom';
-import NoData from '../NoData/NoData';
+import NoData from '../../NoData/NoData';
 
 function Categories() {
     const [loading, setLoading] = useState(false);
@@ -191,7 +191,7 @@ function Categories() {
                                                             </td>
                                                         </tr>
                                                     ))
-                                                ) : <NoData content={'No Categories'} />
+                                                ) : <NoData content={'No Categories'} tag="p" />
                                             )}
                                         </tbody>
                                     </table>

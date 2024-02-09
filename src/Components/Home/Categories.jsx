@@ -1,36 +1,25 @@
 import React, { useEffect, useState } from 'react'
 import './Home.css';
-// import bed from '../../assets/images/bedroom.png';
-// import chair from '../../assets/images/chair.png';
-// import dining from '../../assets/images/dining.png';
-// import lounge from '../../assets/images/lounge.png';
-// import office_chair from '../../assets/images/office_chair.png';
 import { NavLink } from 'react-router-dom';
 import Loader from '../Loader/Loader';
+import axiosClient from '../../axios-client';
 function Categories() {
     const [categories, setCategories] = useState();
-    const [error, setError] = useState();
     const [loading, setLoading] = useState(false);
     useEffect(() => {
         fetchData();
     }, []);
     const fetchData = async () => {
-        try {
-            setLoading(true);
-            const apiUrl = process.env.REACT_APP_API_BASE_URL || process.env.API_BASE_URL;
-            const response = await fetch(`${apiUrl}/categories/all`);
-
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-
-            const result = await response.json();
-            setCategories(result.categories);
-            setLoading(false);
-        } catch (error) {
-            setError(error);
-            setLoading(false);
-        }
+        setLoading(true);
+        axiosClient.get('/categories/all')
+            .then(({ data }) => {
+                setCategories(data.categories);
+                setLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setLoading(false);
+            })
     };
     return (
 

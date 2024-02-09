@@ -188,7 +188,7 @@ function SellerManagers() {
                                                             <td>{manager.user.email}</td>
                                                         </tr>
                                                     ))
-                                                ) : <NoData content={'No managers'} />}
+                                                ) : <NoData content={'No managers'} tag="p" />}
                                             </tbody>
                                         </table>
                                     )}

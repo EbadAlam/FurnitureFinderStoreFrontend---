@@ -5,7 +5,8 @@ import axiosClient from '../../../axios-client';
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import Swal from 'sweetalert2';
-import NoData from '../NoData/NoData';
+import NoData from '../../NoData/NoData';
+
 
 function Products() {
     const [loading, setLoading] = useState(true);
@@ -16,8 +17,8 @@ function Products() {
     const fetchProducts = () => {
         setLoading(true);
         axiosClient.get('/products/all')
-            .then((data) => {
-                setProducts(data.data.products);
+            .then(({ data }) => {
+                setProducts(data.products);
                 setLoading(false);
             })
             .catch((e) => {
@@ -213,7 +214,7 @@ function Products() {
                                                             </td>
                                                         </tr>
                                                     ))
-                                                ) : <NoData content={'No Products'} />
+                                                ) : <NoData content={'No Products'} tag="p" />
                                             )}
                                         </tbody>
 

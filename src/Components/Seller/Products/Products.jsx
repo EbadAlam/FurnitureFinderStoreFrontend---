@@ -224,7 +224,7 @@ function SellerProducts() {
                                                             </td>
                                                         </tr>
                                                     ))
-                                                ) : <NoData content={'No Products'} />}
+                                                ) : <NoData content={'No Products'} tag="p" />}
                                             </tbody>
                                         </table>
                                     )}
