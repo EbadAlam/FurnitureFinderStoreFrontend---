@@ -73,9 +73,9 @@ const CategoryPage = ({ categoryName }) => {
                                     <NoData content={'No products found under this category'} tag='h2' />
                                 )} */}
                                 {products && products.length > 0 ? (
-                                    products.some(product => product.product_stock_status === 'Active') ? (
+                                    products.some(product => product.product_status === 'Active') ? (
                                         products.map((product, index) => (
-                                            product.product_stock_status === 'Active' && (
+                                            product.product_status === 'Active' && (
                                                 <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12" key={index}>
                                                     <div className="card card-figure">
                                                         <figure className="figure">
@@ -87,14 +87,12 @@ const CategoryPage = ({ categoryName }) => {
                                                                     </a>
                                                                     <span className="badge badge-success">{product.product_stock_status}</span>
                                                                 </div>
-                                                                {token && (
-                                                                    <div className="figure-action">
-                                                                        <NavLink to="#" className="btn btn-block btn-sm btn-primary">Quick Action</NavLink>
-                                                                    </div>
-                                                                )}
+                                                                <div className="figure-action">
+                                                                    <NavLink to="#" className="btn btn-block btn-sm btn-primary">Details</NavLink>
+                                                                </div>
                                                             </div>
                                                             <figcaption className="figure-caption">
-                                                                <h6 className="figure-title"><a href="#">{product.product_name}</a></h6>
+                                                                <h3 className="figure-title"><NavLink>{product.product_name}</NavLink></h3>
                                                                 <p className="text-muted mb-0">{product.product_description}</p>
                                                             </figcaption>
                                                         </figure>

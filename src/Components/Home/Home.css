@@ -78,8 +78,13 @@
     text-align: center;
 }
 
+.slidesImage {
+    height: 300px;
+}
+
 .slidesImage img {
     width: 100%;
+    height: 100%;
 }
 
 .slidesName h3 {
@@ -145,7 +150,7 @@
 }
 
 .custom-prev {
-    margin-top: 407px !important;
+    margin-top: 470px !important;
     margin-left: 470px !important;
 }
 
