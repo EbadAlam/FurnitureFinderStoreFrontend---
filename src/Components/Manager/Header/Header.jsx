@@ -23,11 +23,11 @@ function Header() {
         setLoading(true);
         axiosClient.post('/logout')
             .then(() => {
-                setLoading(false);
-                setToken(null);
-                setUser({});
                 localStorage.removeItem('user_email');
+                setUser();
+                setToken(null);
                 Navigate('/');
+                setLoading(false);
             })
             .catch((err) => {
                 console.error(err);
@@ -56,10 +56,9 @@ function Header() {
                                 </a>
                                 {headerProfile ? (
                                     <div class="dropdown-menu dropdown-menu-right nav-user-dropdown" style={{ display: 'block' }}>
-
                                         <div class="nav-user-info">
                                             <h5 class="mb-0 text-white nav-user-name">{user.name}</h5>
-                                            <span class="status"></span><span class="ml-2">{user.position.position}</span>
+                                            <span class="status"></span><span class="ml-2">{user.position}</span>
                                         </div>
                                         <a onClick={adminLogout} style={{ cursor: 'pointer' }} class="dropdown-item"><i class="fas fa-power-off mr-2"></i>Logout</a>
                                     </div>

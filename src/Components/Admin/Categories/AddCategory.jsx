@@ -33,6 +33,7 @@ function AddCategory() {
                     showConfirmButton: false,
                     timer: 1500
                 });
+                setLoading(false);
                 navigate('/admin/categories');
             })
             .catch((error) => {
@@ -46,8 +47,8 @@ function AddCategory() {
                         })
                     }
                 }
+                setLoading(false);
             })
-        setLoading(false);
     }
     const showErrorAlert = (errorMessage) => {
         Swal.fire({

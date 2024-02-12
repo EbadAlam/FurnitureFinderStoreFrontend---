@@ -9,12 +9,12 @@ function SellerDashboard() {
         <SellerLayout>
             <div className='container-fluid dashboard-content'>Dashboard</div>
             <div className="card-body">
-                {user.store_detail.address === null && (
+                {user.address === null && (
                     <div className="alert alert-danger" role="alert">
                         <NavLink to="/seller/account">Please add address to your profile</NavLink>
                     </div>
                 )}
-                {user.store_detail.store_image === null && (
+                {user.store_image === null && (
                     <div className="alert alert-danger" role="alert">
                         <NavLink to="/seller/account">Please add store image</NavLink>
                     </div>

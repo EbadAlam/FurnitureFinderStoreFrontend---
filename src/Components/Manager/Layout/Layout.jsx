@@ -13,7 +13,7 @@ function ManagerLayout({ children }) {
     if (_loading === false) {
         if (token) {
             if (user) {
-                if (user.position.position == 'Manager') {
+                if (user.position == 'manager') {
                     return (
                         <>
                             <div className='dashboard-main-wrapper'>

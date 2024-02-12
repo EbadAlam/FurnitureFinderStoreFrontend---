@@ -17,10 +17,10 @@ function SideBar() {
                                 Menu
                             </li>
                             <li className="nav-item ">
-                                <NavLink className="nav-link active" to="/manager/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
+                                <NavLink className="nav-link" to="/manager/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
                             </li>
                             <li className="nav-item ">
-                                {user.position.status === 'good' ? (
+                                {user.manager_status === 'good' ? (
                                     <NavLink className="nav-link" to="/manager/products"><i className="fa fa-fw fa-table"></i> Products</NavLink>
                                 ) : (
                                     <span className="nav-link"><i className="fa fa-fw fa-table"></i> Products</span>

@@ -17,7 +17,7 @@ function SideBar() {
                                 Menu
                             </li>
                             <li className="nav-item ">
-                                <NavLink className="nav-link active" to="/seller/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
+                                <NavLink className="nav-link" to="/seller/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
                             </li>
                             <li className="nav-item ">
                                 {user.store_detail === null || user.store_locations === null || user.email_status === 'non-verified' ? (

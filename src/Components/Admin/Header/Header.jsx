@@ -21,9 +21,9 @@ function Header() {
         setLoading(true);
         axiosClient.post('/logout')
             .then(() => {
-                setToken(null);
-                setUser({});
                 localStorage.removeItem('user_email');
+                setUser();
+                setToken(null);
                 setLoading(false);
             })
             .catch((err) => {

@@ -36,7 +36,7 @@ function SellerAccount() {
             'store_location': storeLocationRef.current.value,
             'user_id': user.id,
         }
-        axiosClient.post('/seller/products/locationstore', payload)
+        axiosClient.post('/seller/locationstore', payload)
             .then(({ data }) => {
                 toast(data.message, {
                     position: "top-right",
@@ -67,7 +67,7 @@ function SellerAccount() {
         }).then((result) => {
             if (result.isConfirmed) {
                 setLoadingFullPage(true);
-                axiosClient.delete(`/seller/products/locationstore/delete/${id}`)
+                axiosClient.delete(`/seller/locationstore/delete/${id}`)
                     .then(({ data }) => {
                         fetchUserData();
                         setLoadingFullPage(false);
@@ -98,7 +98,7 @@ function SellerAccount() {
         const imagePayload = {
             'store_image': storeLocationImageRef.current.files[0],
         };
-        axiosClient.post(`/seller/products/locationstoreimage/${user.id}`, imagePayload, {
+        axiosClient.post(`/seller/locationstoreimage/${user.id}`, imagePayload, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -138,7 +138,7 @@ function SellerAccount() {
         const addressPayload = {
             address: addressRef.current.value,
         }
-        axiosClient.post(`/seller/products/addaddress/${user.id}`, addressPayload)
+        axiosClient.post(`/seller/addaddress/${user.id}`, addressPayload)
             .then(({ data }) => {
                 setStAd(false);
                 setLoading(false);
@@ -219,23 +219,21 @@ function SellerAccount() {
                             <label for="inputText4" className="col-form-label">Phone Number</label>
                             <input id="inputText4" type="number" value={user.phone_number} className="form-control" name="phone_number" disabled />
                         </div>
-                        {user.store_detail && (
-                            <>
-                                <div className="form-group">
-                                    <label for="inputText4" className="col-form-label">Address</label>
-                                    <input id="inputText4" type="text" value={user.store_detail.address} className="form-control" name="address" disabled />
-                                </div>
 
-                                <div className="form-group">
-                                    <label for="inputText4" className="col-form-label">Store Image</label>
-                                    {user.store_detail.store_image ? (
-                                        <img style={{ width: '150px', display: 'block' }} src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${user.store_detail.store_image}`} alt="" />
-                                    ) : (
-                                        <p>No image added yet!</p>
-                                    )}
-                                </div>
-                            </>
-                        )}
+                        <div className="form-group">
+                            <label for="inputText4" className="col-form-label">Address</label>
+                            <input id="inputText4" type="text" value={user.address} className="form-control" name="address" disabled />
+                        </div>
+
+                        <div className="form-group">
+                            <label for="inputText4" className="col-form-label">Store Image</label>
+                            {user.store_image ? (
+                                <img style={{ width: '150px', display: 'block' }} src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${user.store_image}`} alt="" />
+                            ) : (
+                                <p>No image added yet!</p>
+                            )}
+                        </div>
+
 
                         {/* store locations */}
                         <div className="form-group">
@@ -267,13 +265,13 @@ function SellerAccount() {
                                 <button onClick={toggleStL} className="btn btn-primary">Add Store Location</button>
                             </div>
                             {
-                                !user.store_detail.store_image && (
+                                !user.store_image && (
                                     <div className="col-lg-3">
                                         <button onClick={toggleStIm} className="btn btn-primary">Add Store Image</button>
                                     </div>
                                 )
                             }
-                            {!user.store_detail.address && (
+                            {!user.address && (
                                 <div className="col-lg-3">
                                     <button onClick={toggleStAd} className="btn btn-primary">Add Address</button>
                                 </div>

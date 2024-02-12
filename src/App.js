@@ -28,13 +28,9 @@ import ManagerAddProduct from './Components/Manager/Products/AddProducts';
 
 function App() {
   const [categories, setCategories] = useState();
-  const {fetchUserData,token} = useStateContext();
+  const { fetchUserData } = useStateContext();
     
-const fetchUser = () => {
-  if (token) {
-    fetchUserData();
-  }
-}
+
 const fetchData = async () => {
   axiosClient.get('/categories/all')
   .then(({data}) => {
@@ -46,8 +42,9 @@ const fetchData = async () => {
 };
 useEffect(() => {
   fetchData();
-  fetchUser();
+  fetchUserData();
 }, []);
+
   return (
     <Router className="App">
       <Routes>
@@ -76,7 +73,7 @@ useEffect(() => {
         <Route path="/manager/dashboard" element={<ManagerDashboard />} />
         <Route path="/manager/products" element={<ManagerProducts />} />
         <Route path="/manager/products/add" element={<ManagerAddProduct />} />
-        {/* <Route path="/seller/account" element={<SellerAccount />} /> */}
+        
         {/* Email Verification Route */}
         <Route path="/user/emailverification/:email/:_token" element={<EmailVerification />} />
         {/* Category Routes */}

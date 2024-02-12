@@ -12,7 +12,7 @@ function ManagerDashboard() {
                 <Loader fullScreen={true} />
             ) : (
                 <div className="card-body">
-                    {user.position.status === 'Restricted' && (
+                    {user.position == 'manager' && user.manager_status === 'restricted' && (
                         <div className="alert alert-danger" role="alert">
                             Your account is restricted by store owner!
                         </div>

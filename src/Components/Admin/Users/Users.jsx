@@ -197,7 +197,7 @@ function Users() {
                                                             <td>{user.name}</td>
                                                             <td>{user.email}</td>
                                                             <td>{user.role}</td>
-                                                            <td>{user.position ? user.position.position : '---'}</td>
+                                                            <td>{user.position}</td>
                                                             <td>{user.account_status}</td>
                                                             <td>
                                                                 {user.role === process.env.REACT_APP_ROLE_MASTER_ADMIN ? (

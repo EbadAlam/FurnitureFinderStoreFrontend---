@@ -37,7 +37,7 @@ function Signup() {
         setErrors(null);
         axiosClient.post('/login', payload)
             .then(({ data }) => {
-                if (data.user.account_status === 'Inactive') {
+                if (data.user.account_status === 'inactive') {
                     setLoading(false);
                     toast('Account Inactive. Please contact admin', {
                         position: "top-right",
@@ -55,8 +55,8 @@ function Signup() {
 
                 } else {
                     localStorage.setItem('user_email', JSON.stringify(data.user.email));
-                    fetchUserData();
                     setToken(data.access_token);
+                    fetchUserData();
                     setLoading(false);
                     toast(data.message, {
                         position: "top-right",
@@ -188,7 +188,7 @@ function Signup() {
                                             </div>
                                             <div class="text"><NavLink className="forgot_password" to="/">Forgot password?</NavLink></div>
                                             <div class="button input-box">
-                                                <input type="submit" value="Sumbit" />
+                                                <input type="submit" value="Login" />
                                             </div>
                                             <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
                                         </div>
@@ -229,7 +229,7 @@ function Signup() {
                                                 <input type="password" ref={passwordRefSignup} placeholder="Enter your password" required />
                                             </div>
                                             <div class="button input-box">
-                                                <input type="submit" value="Sumbit" />
+                                                <input type="submit" value="Signup" />
                                             </div>
                                             <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
                                         </div>

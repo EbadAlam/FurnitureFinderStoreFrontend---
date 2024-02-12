@@ -30,7 +30,7 @@ export const ContextProvider = ({ children }) => {
                     setLoading(false);
                 })
                 .catch((err) => {
-                    console.error(err);
+                    console.error(err, "user login error");
                     setLoading(false);
                 })
         }

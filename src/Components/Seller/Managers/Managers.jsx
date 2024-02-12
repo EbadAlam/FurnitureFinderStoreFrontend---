@@ -20,8 +20,7 @@ function SellerManagers() {
         setLoading(true);
         axiosClient.get(`/seller/manager/all/${user.id}`)
             .then(({ data }) => {
-                // console.log(data.user.managers);
-                setManagers(data.user.managers);
+                setManagers(data.managers);
                 setLoading(false);
             })
             .catch((e) => {
@@ -73,12 +72,10 @@ function SellerManagers() {
             }).then((result) => {
                 if (result.isConfirmed) {
                     const selectedIds = managers.filter(manager => manager.isChecked).map(manager => manager.id);
-                    const selectedUserIds = managers.filter(manager => manager.isChecked).map(manager => manager.user.id);
                     setLoading(true);
                     axiosClient.post('/seller/manager/bulkaction', {
                         action: selectedOption,
                         manager_ids: selectedIds,
-                        user_ids: selectedUserIds,
                     })
                         .then(({ data }) => {
                             setLoading(false);
@@ -140,8 +137,8 @@ function SellerManagers() {
                                         <div id="bulkOptionContainer" class="col-xs-4">
                                             <select class="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
                                                 <option value="">Select Options</option>
-                                                <option value="Restricted">Restrict</option>
-                                                <option value="Unrestrict">Unrestrict</option>
+                                                <option value="restricted">Restrict</option>
+                                                <option value="unrestrict">Unrestrict</option>
                                                 <option value="delete">Delete</option>
                                             </select>
                                         </div>
@@ -181,11 +178,11 @@ function SellerManagers() {
                                                             </td>
                                                             <td>{index + 1}</td>
                                                             <td>
-                                                                {manager.user.name}
-                                                                <span class="badge badge-primary ml-3">{manager.user.account_status}</span>
-                                                                {manager.status === 'Restricted' && (<span class="badge badge-danger ml-3">{manager.status}</span>)}
+                                                                {manager.name}
+                                                                <span class="badge badge-primary ml-3">{manager.account_status}</span>
+                                                                {manager.manager_status === 'restricted' && (<span class="badge badge-danger ml-3">{manager.manager_status}</span>)}
                                                             </td>
-                                                            <td>{manager.user.email}</td>
+                                                            <td>{manager.email}</td>
                                                         </tr>
                                                     ))
                                                 ) : <NoData content={'No managers'} tag="p" />}
