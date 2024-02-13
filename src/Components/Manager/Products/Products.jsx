@@ -108,7 +108,7 @@ function ManagerProducts() {
                                             <div id="bulkOptionContainer" class="col-xs-4">
                                                 <select class="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
                                                     <option value="">Select Options</option>
-                                                    <option value="available">Available</option>
+                                                    <option value="Available">Available</option>
                                                     <option value="Out Of Stock">Out Of Stock</option>
                                                 </select>
                                             </div>

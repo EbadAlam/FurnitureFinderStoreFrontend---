@@ -25,6 +25,7 @@ import SellerAddManagers from './Components/Seller/Managers/AddManagers';
 import ManagerDashboard from './Components/Manager/Dashboard/Dashboard';
 import ManagerProducts from './Components/Manager/Products/Products';
 import ManagerAddProduct from './Components/Manager/Products/AddProducts';
+import ProductDetail from './Components/ProductDetail/ProductDetail';
 
 function App() {
   const [categories, setCategories] = useState();
@@ -52,6 +53,7 @@ useEffect(() => {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/product/detail/:id" element={<ProductDetail />} />
         <Route path="*" element={<NotFound />} />
         {/* Master Admin Routes */}
         <Route path="/admin/dashboard" element={<Dashboard />} />

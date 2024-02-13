@@ -36,42 +36,8 @@ const CategoryPage = ({ categoryName }) => {
                     <Loader fullScreen={true} />
                 ) : (
                     <>
-                        <div>
-                            <h2>{content.cat_title}</h2>
-                            <p>{content.cat_description}</p>
-                        </div>
                         <div className="col-lg-12 mt-3">
                             <div className="row">
-                                {/* {products && products.length > 0 ? (
-                                    products.map((product, index) => (
-                                        <div className="col-xl-3 col-lg-6 col-md-6 col-sm-12 col-12">
-                                            <div className="card card-figure">
-                                                <figure className="figure">
-                                                    <div className="figure-img">
-                                                        <img className="img-fluid" src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${product.product_image}`} alt={product.product_name} />
-                                                        <div className="figure-description">
-                                                            <h3 className="figure-title"> {product.product_name} </h3>
-                                                            <p className="text-muted mb-0">
-                                                                <small>{product.product_description}</small>
-                                                            </p>
-                                                        </div>
-                                                        <div className="figure-tools">
-                                                            <a href="#" className="tile tile-circle tile-sm mr-auto">   </a>
-                                                            <span className="badge badge-success">{product.product_stock_status}</span>
-                                                        </div>
-                                                        {token ? (
-                                                            <div className="figure-action">
-                                                                <NavLink href="#" className="btn btn-block btn-sm btn-primary">Quick Action</NavLink>
-                                                            </div>
-                                                        ) : (null)}
-                                                    </div>
-                                                </figure>
-                                            </div>
-                                        </div>
-                                    ))
-                                ) : (
-                                    <NoData content={'No products found under this category'} tag='h2' />
-                                )} */}
                                 {products && products.length > 0 ? (
                                     products.some(product => product.product_status === 'Active') ? (
                                         products.map((product, index) => (

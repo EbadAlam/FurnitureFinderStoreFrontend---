@@ -1,0 +1,38 @@
+.gallery_images {
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+}
+
+.gallery_images .image {
+    width: 10%;
+    margin: 5px 5px 5px 0px;
+    cursor: pointer;
+}
+
+.gallery_images .image img {
+    width: 100%;
+}
+
+.gallery_images .image {
+    position: relative;
+    display: inline-block;
+}
+
+.gallery_images .image img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+.gallery_images .image i {
+    position: absolute;
+    top: 5px;
+    /* Adjust top position as needed */
+    right: 5px;
+    /* Adjust right position as needed */
+    font-size: 20px;
+    color: red;
+    /* Change color as needed */
+    cursor: pointer;
+}

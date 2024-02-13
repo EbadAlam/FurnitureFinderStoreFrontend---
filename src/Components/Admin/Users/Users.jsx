@@ -146,8 +146,8 @@ function Users() {
                                         <div id="bulkOptionContainer" class="col-xs-4">
                                             <select class="form-control" name="bulk_options" id="bulk_options" onChange={handleOptionChange}>
                                                 <option value="">Select Options</option>
-                                                <option value="active">Active</option>
-                                                <option value="inactive">Inactive</option>
+                                                <option value="Active">Active</option>
+                                                <option value="Inactive">Inactive</option>
                                                 <option value="delete">Delete</option>
                                             </select>
                                         </div>

@@ -37,7 +37,7 @@ function Signup() {
         setErrors(null);
         axiosClient.post('/login', payload)
             .then(({ data }) => {
-                if (data.user.account_status === 'inactive') {
+                if (data.user.account_status === 'Inactive') {
                     setLoading(false);
                     toast('Account Inactive. Please contact admin', {
                         position: "top-right",

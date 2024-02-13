@@ -13,6 +13,7 @@ function SellerAddProduct() {
     const [errors, setErrors] = useState();
     const [categories, setCategories] = useState();
     const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedFiles, setSelectedFiles] = useState(null);
     const nameRef = useRef();
     const descriptionRef = useRef();
     const priceRef = useRef();
@@ -36,15 +37,18 @@ function SellerAddProduct() {
         e.preventDefault();
         setErrors();
         setLoading(true);
-        const payload = {
-            product_name: nameRef.current.value,
-            product_description: descriptionRef.current.value,
-            product_price: priceRef.current.value,
-            product_image: imageRef.current.files[0],
-            cat_id: selectedCategory,
-            user_id: user.id
+        const formData = new FormData();
+
+        formData.append('product_name', nameRef.current.value);
+        formData.append('product_description', descriptionRef.current.value);
+        formData.append('product_price', priceRef.current.value);
+        formData.append('cat_id', selectedCategory);
+        formData.append('user_id', user.id);
+        formData.append('product_image', imageRef.current.files[0]);
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append('gallery[]', selectedFiles[i]);
         }
-        axiosClient.post('/seller/products/create', payload, {
+        axiosClient.post('/seller/products/create', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             }
@@ -93,6 +97,9 @@ function SellerAddProduct() {
     const handleCategoryChange = (event) => {
         setSelectedCategory(event.target.value);
     };
+    const handleFileChange = (event) => {
+        setSelectedFiles(event.target.files);
+    };
     useEffect(() => {
         fetchCategories();
     }, [])
@@ -136,6 +143,15 @@ function SellerAddProduct() {
                                         <div class="form-group">
                                             <label for="exampleFormControlTextarea1">Product Description</label>
                                             <textarea ref={descriptionRef} class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        </div>
+                                        <div class="custom-file">
+                                            <input
+                                                type="file"
+                                                class="custom-file-input"
+                                                onChange={handleFileChange}
+                                                multiple
+                                            />
+                                            <label class="custom-file-label" for="customFile">Product Gallery</label>
                                         </div>
                                         <div class="form-group">
                                             <button type='submit' className='btn btn-success'>Submit</button>

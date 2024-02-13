@@ -20,7 +20,7 @@ function SideBar() {
                                 <NavLink className="nav-link" to="/manager/dashboard"><i className="fa fa-fw fa-user-circle"></i> Dashboard</NavLink>
                             </li>
                             <li className="nav-item ">
-                                {user.manager_status === 'good' ? (
+                                {user.manager_status === 'Good' ? (
                                     <NavLink className="nav-link" to="/manager/products"><i className="fa fa-fw fa-table"></i> Products</NavLink>
                                 ) : (
                                     <span className="nav-link"><i className="fa fa-fw fa-table"></i> Products</span>

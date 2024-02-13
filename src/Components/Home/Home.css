@@ -95,9 +95,10 @@
 
 .slidesDetailBtn {
     margin-top: 15px;
+    height: 35px;
 }
 
-.slidesDetailBtn button {
+.slidesDetailBtn a {
     border: 1px solid #959595;
     border-radius: 40px;
     padding: 15px;

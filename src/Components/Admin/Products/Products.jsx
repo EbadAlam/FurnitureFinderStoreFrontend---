@@ -167,6 +167,7 @@ function Products() {
                                                 <th><input id="selectAllBoxes" type="checkbox" onChange={handleSelectAll} checked={selectAll} /></th>
                                                 <th>S.No</th>
                                                 <th>Product Name</th>
+                                                <th>Category</th>
                                                 <th>User</th>
                                                 <th>Product Price</th>
                                                 <th>Status</th>
@@ -194,6 +195,7 @@ function Products() {
                                                             </td>
                                                             <td>{index + 1}</td>
                                                             <td>{product.product_name}</td>
+                                                            <td>{product.category.cat_title}</td>
                                                             <td>{product.add_by.name} <span className="badge badge-success">{product.add_by.position.position}</span></td>
                                                             <td>{product.product_price}</td>
                                                             <td>{product.product_status}</td>

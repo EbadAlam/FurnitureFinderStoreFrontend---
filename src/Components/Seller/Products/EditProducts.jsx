@@ -5,7 +5,7 @@ import axiosClient from '../../../axios-client';
 import SellerLayout from '../Layout/Layout';
 import { useStateContext } from '../../../contexts/ContextProvider';
 import { ToastContainer, toast } from 'react-toastify';
-
+import './product.css';
 
 function SellerEditProduct() {
     const navigate = useNavigate();
@@ -15,6 +15,9 @@ function SellerEditProduct() {
     const imageInputRef = useRef(null);
     const [errors, setErrors] = useState();
     const [loading, setLoading] = useState(false);
+    const [gLoading, setGLoading] = useState(false);
+    const [selectedFiles, setSelectedFiles] = useState(null);
+    const [galleryImages, setGalleryImages] = useState();
     const { user } = useStateContext();
 
     const handleInputChange = (e) => {
@@ -78,6 +81,9 @@ function SellerEditProduct() {
         formData.append('product_image', productData.product_image);
         formData.append('product_stock_status', productData.product_stock_status);
         formData.append('user_id', user.id);
+        for (let i = 0; i < selectedFiles.length; i++) {
+            formData.append('gallery[]', selectedFiles[i]);
+        }
         axiosClient.post(`/seller/products/edit/${productData.id}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
@@ -117,6 +123,38 @@ function SellerEditProduct() {
             product_stock_status: event.target.value,
         });
     }
+
+    const handleFileChange = (event) => {
+        setSelectedFiles(event.target.files);
+    };
+    const deleteGalleryImageHandler = (id) => {
+        console.log(id);
+        setGLoading(true);
+        axiosClient.delete(`/seller/products/product/galleryimages/delete/${id}`)
+            .then(() => {
+                getProductGallery();
+                setGLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setGLoading(false);
+            });
+    }
+    const getProductGallery = () => {
+        setGLoading(true);
+        axiosClient.get(`/seller/products/product/galleryimages/${productId}`)
+            .then(({ data }) => {
+                setGalleryImages(data.productGallery);
+                setGLoading(false);
+            })
+            .catch((err) => {
+                console.error(err);
+                setGLoading(false);
+            });
+    }
+    useEffect(() => {
+        getProductGallery();
+    }, []);
     useEffect(() => {
         if (errors) {
             Object.keys(errors).forEach(key => {
@@ -196,7 +234,33 @@ function SellerEditProduct() {
                                             <label class="custom-file-label" for="customFile">Product Image</label>
                                             <img style={{ width: '7%' }} src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${productData.product_image}`} alt={productData.product_name} />
                                         </div>
-                                        <div class="form-group mt-4">
+                                        <div class="custom-file mt-4">
+                                            <input
+                                                type="file"
+                                                class="custom-file-input"
+                                                onChange={handleFileChange}
+                                                multiple
+                                            />
+                                            <label class="custom-file-label" for="customFile">Product Gallery</label>
+                                            <div className="gallery_images">
+                                                {gLoading ? (
+                                                    <Loader fullScreen={false} />
+                                                ) : (
+                                                    galleryImages && (
+                                                        galleryImages.length > 0 ? (
+                                                            galleryImages.map((gimg) => (
+                                                                <div className="image">
+                                                                    <img src={`${process.env.REACT_APP_LARAVEL_BASE_URL}/${gimg.image}`} />
+                                                                    <i onClick={() => deleteGalleryImageHandler(gimg.id)} className="fas fa-window-close"></i>
+                                                                </div>
+                                                            ))
+                                                        ) : (
+                                                            <p>No gallery images</p>
+                                                        )
+                                                    ))}
+                                            </div>
+                                        </div>
+                                        <div class="form-group mt-5">
                                             <label for="exampleFormControlTextarea1">Product Description</label>
                                             <textarea name='cat_description' onChange={handleInputChange} class="form-control" id="exampleFormControlTextarea1" rows="3">{productData.product_description}</textarea>
                                         </div>

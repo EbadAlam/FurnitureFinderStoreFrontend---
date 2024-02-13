@@ -6,6 +6,7 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import axiosClient from '../../axios-client';
 import Loader from '../Loader/Loader';
 import NoData from '../NoData/NoData';
+import { NavLink } from 'react-router-dom';
 
 function ForthSection() {
     const { truncateText } = useStateContext();
@@ -91,7 +92,7 @@ function ForthSection() {
                                             <p>{truncateText(product.product_description, 40)}</p>
                                         </div>
                                         <div className="slidesDetailBtn">
-                                            <button>View Details</button>
+                                            <NavLink to={`/product/detail/${product.id}`}>View Details</NavLink>
                                         </div>
                                     </div>
                                 ))
