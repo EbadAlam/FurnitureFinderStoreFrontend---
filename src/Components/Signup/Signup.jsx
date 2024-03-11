@@ -13,7 +13,7 @@ function Signup() {
     const Navigate = useNavigate();
     const [errors, setErrors] = useState(null);
     const [loading, setLoading] = useState(false);
-    const { fetchUserData, setToken, token } = useStateContext();
+    const { fetchUserData, setToken, token, user } = useStateContext();
     const emailRefLogin = useRef();
     const passwordRefLogin = useRef();
     const nameRefSignup = useRef();
@@ -68,7 +68,15 @@ function Signup() {
                         progress: undefined,
                         theme: "dark",
                     });
-                    // Navigate('/');
+                    if (data.user.role === 'master-admin') {
+                        Navigate('/admin/dashboard');
+                    } else if (data.user.role === 'seller') {
+                        Navigate('/seller/dashboard');
+                    } else if (data.user.position === 'manager') {
+                        Navigate('/manager/dashboard');
+                    } else {
+                        Navigate('/');
+                    }
                 }
             })
             .catch(error => {
@@ -137,109 +145,108 @@ function Signup() {
     return (
         <Layout>
             <ToastContainer />
-            {loading ? (
+            {errors &&
+                Object.keys(errors).map(key => (
+                    toast(errors[key][0], {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: true,
+                        closeOnClick: true,
+                        pauseOnHover: false,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    })
+                ))
+            }
+            {loading && (
                 <Loader fullScreen={true} />
-            ) : (
-                <>
-                    {errors &&
-                        Object.keys(errors).map(key => (
-                            toast(errors[key][0], {
-                                position: "top-right",
-                                autoClose: 5000,
-                                hideProgressBar: true,
-                                closeOnClick: true,
-                                pauseOnHover: false,
-                                draggable: true,
-                                progress: undefined,
-                                theme: "dark",
-                            })
-                        ))
-                    }
-                    <div class="containerSignup">
-                        <input type="checkbox" id="flip" />
-                        <div class="cover">
-                            <div class="front">
-                                <img src={image} alt="" />
-                                <div class="text">
-                                    <span class="text-1">Every new friend is a <br /> new adventure</span>
-                                    <span class="text-2">Let's get connected</span>
-                                </div>
-                            </div>
-                            <div class="back">
-                                <div class="text">
-                                    <span class="text-1">Complete miles of journey <br /> with one step</span>
-                                    <span class="text-2">Let's get started</span>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="forms">
-                            <div class="form-content">
-                                <div class="login-form">
-                                    <div class="title">Login</div>
-                                    <form onSubmit={LoginFormSubmit}>
-                                        <div class="input-boxes">
-                                            <div class="input-box">
-                                                <i class="fas fa-envelope"></i>
-                                                <input type="text" ref={emailRefLogin} placeholder="Enter your email" required />
-                                            </div>
-                                            <div class="input-box">
-                                                <i class="fas fa-lock"></i>
-                                                <input type="password" ref={passwordRefLogin} placeholder="Enter your password" required />
-                                            </div>
-                                            <div class="text"><NavLink className="forgot_password" to="/">Forgot password?</NavLink></div>
-                                            <div class="button input-box">
-                                                <input type="submit" value="Login" />
-                                            </div>
-                                            <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
-                                        </div>
-                                    </form>
-                                </div>
-                                <div class="signup-form">
-                                    <div class="title">Signup</div>
-                                    <form onSubmit={SignupFormSubmit}>
-                                        <div class="input-boxes">
-                                            <div class="input-box">
-                                                <input type="text" ref={nameRefSignup} placeholder="Enter your name" required />
-                                            </div>
-                                            <div class="input-box">
-                                                <input type="email" ref={emailRefSignup} placeholder="Enter your email" required />
-                                            </div>
-                                            <div class="input-box">
-                                                <input type="tel" ref={phoneRefSignup} placeholder="Enter your Phone Number" required />
-                                            </div>
-                                            <Select
-                                                className='role_select'
-                                                defaultValue="Select Role"
-                                                style={{
-                                                    width: 120,
-                                                }}
-                                                onChange={handleChangeRole}
-                                                options={[
-                                                    {
-                                                        value: 'buyer',
-                                                        label: 'Buyer',
-                                                    },
-                                                    {
-                                                        value: 'seller',
-                                                        label: 'Seller',
-                                                    },
-                                                ]}
-                                            />
-                                            <div class="input-box">
-                                                <input type="password" ref={passwordRefSignup} placeholder="Enter your password" required />
-                                            </div>
-                                            <div class="button input-box">
-                                                <input type="submit" value="Signup" />
-                                            </div>
-                                            <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
+            )}
+            <div class="containerSignup">
+                <input type="checkbox" id="flip" />
+                <div class="cover">
+                    <div class="front">
+                        <img src={image} alt="" />
+                        <div class="text">
+                            <span class="text-1">Every new friend is a <br /> new adventure</span>
+                            <span class="text-2">Let's get connected</span>
                         </div>
                     </div>
-                </>
-            )}
+                    <div class="back">
+                        <div class="text">
+                            <span class="text-1">Complete miles of journey <br /> with one step</span>
+                            <span class="text-2">Let's get started</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="forms">
+                    <div class="form-content">
+                        <div class="login-form">
+                            <div class="title">Login</div>
+                            <form onSubmit={LoginFormSubmit}>
+                                <div class="input-boxes">
+                                    <div class="input-box">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="text" ref={emailRefLogin} placeholder="Enter your email" required />
+                                    </div>
+                                    <div class="input-box">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" ref={passwordRefLogin} placeholder="Enter your password" required />
+                                    </div>
+                                    <div class="text"><NavLink className="forgot_password" to="/">Forgot password?</NavLink></div>
+                                    <div class="button input-box">
+                                        <input type="submit" value="Login" />
+                                    </div>
+                                    <div class="text sign-up-text">Don't have an account? <label for="flip">Sigup now</label></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="signup-form">
+                            <div class="title">Signup</div>
+                            <form onSubmit={SignupFormSubmit}>
+                                <div class="input-boxes">
+                                    <div class="input-box">
+                                        <input type="text" ref={nameRefSignup} placeholder="Enter your name" required />
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="email" ref={emailRefSignup} placeholder="Enter your email" required />
+                                    </div>
+                                    <div class="input-box">
+                                        <input type="tel" ref={phoneRefSignup} placeholder="Enter your Phone Number" required />
+                                    </div>
+                                    <Select
+                                        className='role_select'
+                                        defaultValue="Select Role"
+                                        style={{
+                                            width: 120,
+                                        }}
+                                        onChange={handleChangeRole}
+                                        options={[
+                                            {
+                                                value: 'buyer',
+                                                label: 'Buyer',
+                                            },
+                                            {
+                                                value: 'seller',
+                                                label: 'Seller',
+                                            },
+                                        ]}
+                                    />
+                                    <div class="input-box">
+                                        <input type="password" ref={passwordRefSignup} placeholder="Enter your password" required />
+                                    </div>
+                                    <div class="button input-box">
+                                        <input type="submit" value="Signup" />
+                                    </div>
+                                    <div class="text sign-up-text">Already have an account? <label for="flip">Login now</label></div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {/* </>
+            )} */}
         </Layout >
     )
 }

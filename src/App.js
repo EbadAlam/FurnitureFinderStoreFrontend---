@@ -1,10 +1,10 @@
+import { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useStateContext } from './contexts/ContextProvider';
 import Home from './Components/Home/Home';
 import About from './Components/About/About';
 import NotFound from './Components/NotFound/NotFound';
 import CategoryPage from './Components/CategoryPage/CategoryPage';
-import { useStateContext } from './contexts/ContextProvider';
-import { useEffect, useState } from 'react';
 import Signup from './Components/Signup/Signup';
 import Dashboard from './Components/Admin/Dashboard/Dashboard';
 import Users from './Components/Admin/Users/Users';
@@ -29,9 +29,7 @@ import ProductDetail from './Components/ProductDetail/ProductDetail';
 
 function App() {
   const [categories, setCategories] = useState();
-  const { fetchUserData } = useStateContext();
-    
-
+  const { fetchUserData} = useStateContext();
 const fetchData = async () => {
   axiosClient.get('/categories/all')
   .then(({data}) => {
@@ -41,6 +39,7 @@ const fetchData = async () => {
     console.error(err);
   })
 };
+
 useEffect(() => {
   fetchData();
   fetchUserData();
@@ -53,15 +52,15 @@ useEffect(() => {
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Signup />} />
         <Route path="/signup" element={<Signup />} />
-        <Route path="/product/detail/:id" element={<ProductDetail />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/product/detail/:productId" element={<ProductDetail />} />
         {/* Master Admin Routes */}
+        <Route path="*" element={<NotFound />} />
         <Route path="/admin/dashboard" element={<Dashboard />} />
         <Route path="/admin/users" element={<Users />} />
+        <Route path="/admin/users/edit/:userId" element={<EditUser />} />
         <Route path="/admin/categories" element={<Categories />} />
         <Route path="/admin/categories/add" element={<AddCategory />} />
         <Route path="/admin/categories/edit/:categoryName" element={<EditCategory />} />
-        <Route path="/admin/users/edit/:userId" element={<EditUser />} />
         <Route path="/admin/products" element={<Products />} />
         {/* Seller Admin Routes */}
         <Route path="/seller/dashboard" element={<SellerDashboard />} />
@@ -90,5 +89,4 @@ useEffect(() => {
     </Router>
   );
 }
-
 export default App;

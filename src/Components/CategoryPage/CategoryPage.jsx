@@ -54,11 +54,13 @@ const CategoryPage = ({ categoryName }) => {
                                                                     <span className="badge badge-success">{product.product_stock_status}</span>
                                                                 </div>
                                                                 <div className="figure-action">
-                                                                    <NavLink to="#" className="btn btn-block btn-sm btn-primary">Details</NavLink>
+                                                                    <NavLink to={`/product/detail/${product.id}`} className="btn btn-block btn-sm btn-primary">Details</NavLink>
                                                                 </div>
                                                             </div>
                                                             <figcaption className="figure-caption">
-                                                                <h3 className="figure-title"><NavLink>{product.product_name}</NavLink></h3>
+                                                                <h3 className="figure-title">
+                                                                    <NavLink to={`/product/detail/${product.id}`}>{product.product_name}</NavLink>
+                                                                </h3>
                                                                 <p className="text-muted mb-0">{product.product_description}</p>
                                                             </figcaption>
                                                         </figure>

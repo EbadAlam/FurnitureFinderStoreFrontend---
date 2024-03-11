@@ -3,12 +3,13 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import SideBar from '../SideBar/SideBar'
 import { useStateContext } from '../../../contexts/ContextProvider'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'sweetalert2/dist/sweetalert2.min.css';
 
 
 function SellerLayout({ children }) {
     const { token, user } = useStateContext();
+    const navigate = useNavigate();
     if (token) {
         if (user) {
             if (user.role === 'seller') {
@@ -26,13 +27,16 @@ function SellerLayout({ children }) {
                     </>
                 )
             } else {
-                return (<Navigate to="/" />)
+                // return (<Navigate to="/" />)
+                navigate('/');
             }
         } else {
-            return (<Navigate to="/login" />)
+            navigate('/login');
+            // return (<Navigate to="/login" />)
         }
     } else {
-        return (<Navigate to="/login" />)
+        navigate('/login');
+        // return (<Navigate to="/login" />)
     }
 
 }

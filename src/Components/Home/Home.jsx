@@ -8,6 +8,8 @@ import FirstSection from './FirstSection';
 import ForthSection from './ForthSection';
 import Loader from '../Loader/Loader';
 import { useStateContext } from '../../contexts/ContextProvider';
+import ThirdSection from './ThirdSection';
+// import { useNavigate } from 'react-router-dom';
 
 function Home() {
     const { _loading } = useStateContext();
@@ -19,6 +21,7 @@ function Home() {
                 <div className='mainDiv'>
                     <FirstSection />
                     <SecondSection />
+                    <ThirdSection />
                     <ForthSection />
                 </div>
             )}

@@ -1,22 +1,28 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
-import { Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useStateContext } from '../../contexts/ContextProvider';
 
 const Layout = ({ children }) => {
     const { token, user, _loading } = useStateContext();
-    if (_loading === false) {
-        if (token && user.role === 'master-admin') {
-            return (<Navigate to="/admin/dashboard" />)
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        // if (!_loading && token && user) {
+        if (user.role === 'master-admin') {
+            navigate("/admin/dashboard");
         }
-        if (token && user.position === 'manager') {
-            return (<Navigate to="/manager/dashboard" />)
+        if (user.position === 'manager') {
+            navigate("/manager/dashboard");
         }
-        if (token && user.role === 'seller') {
-            return (<Navigate to="/seller/dashboard" />)
+        if (user.role === 'seller') {
+            navigate("/seller/dashboard");
         }
-    }
+        // }
+    }, [_loading, token, user, navigate]);
+
+
     return (
         <div className="layout">
             <Header />

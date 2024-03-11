@@ -1,9 +1,9 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import AdminLayout from '../Layout/Layout'
 import axiosClient from '../../../axios-client';
 import { useNavigate, useParams } from 'react-router-dom';
 import Loader from '../../Loader/Loader';
-import Swal from 'sweetalert2';
+import { ToastContainer, toast } from 'react-toastify';
 function EditUser() {
     const { userId } = useParams();
     const [user, setUser] = useState({});
@@ -14,7 +14,6 @@ function EditUser() {
         setLoading(true);
         axiosClient(`/user/detail/${id}`)
             .then((data) => {
-                // console.log(data);
                 setUser(data.data.user);
                 setLoading(false);
             })
@@ -34,14 +33,38 @@ function EditUser() {
         });
     };
     const UserFormSubmitHandler = (e) => {
+        setLoading(true);
         e.preventDefault();
         setErrors();
-        setLoading(true);
-        setLoading(false);
+        const payload = {
+            name: user.name,
+            email: user.email,
+            password: user.password,
+        }
+        axiosClient.put(`/user/edit/${userId}`, payload)
+            .then(({ data }) => {
+                setLoading(false);
+                toast(data.message, {
+                    position: "top-right",
+                    autoClose: 4000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: false,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
+                navigate('/admin/users');
+            })
+            .catch((err) => {
+                setLoading(false);
+                console.error(err);
+            })
     }
 
     return (
         <AdminLayout>
+            <ToastContainer />
             <div className='container-fluid dashboard-content'>
                 <div class="row">
                     <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">

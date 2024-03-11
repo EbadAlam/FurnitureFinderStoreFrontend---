@@ -90,14 +90,6 @@ function SellerEditProduct() {
             },
         })
             .then(({ data }) => {
-                // console.log(data);
-                // Swal.fire({
-                //     position: "top-end",
-                //     icon: "success",
-                //     title: data.message,
-                //     showConfirmButton: false,
-                //     timer: 1500
-                // });
                 toast(data.message, {
                     position: "top-right",
                     autoClose: 4000,

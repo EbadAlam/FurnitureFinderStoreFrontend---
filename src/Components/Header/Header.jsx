@@ -7,6 +7,7 @@ import { useStateContext } from '../../contexts/ContextProvider';
 import axiosClient from '../../axios-client';
 import Loader from '../Loader/Loader';
 import 'react-toastify/dist/ReactToastify.css';
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const Header = () => {
     const { token, setUser, setToken, user } = useStateContext();

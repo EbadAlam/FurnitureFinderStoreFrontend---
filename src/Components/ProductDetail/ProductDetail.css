@@ -1,0 +1,25 @@
+.product-detail-container {
+    display: flex;
+    justify-content: space-between;
+    background-color: white;
+    padding: 10px 15px;
+}
+
+.galleryDetailPage {
+    width: 30% !important;
+    margin-left: 35px;
+}
+
+.galleryDetailPage .image-gallery-left-nav,
+.galleryDetailPage .image-gallery-right-nav {
+    display: none !important;
+}
+
+.galleryDetailPage .image-gallery-thumbnail {
+    width: 30% !important;
+}
+
+.descriptionDetailPage {
+    width: 65%;
+    margin-top: 20px;
+}

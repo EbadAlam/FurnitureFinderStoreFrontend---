@@ -3,12 +3,13 @@ import Header from '../Header/Header'
 import Footer from '../Footer/Footer'
 import SideBar from '../SideBar/SideBar'
 import { useStateContext } from '../../../contexts/ContextProvider'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import 'sweetalert2/dist/sweetalert2.min.css';
 import Loader from '../../Loader/Loader'
 
 
 function ManagerLayout({ children }) {
+    const navigate = useNavigate();
     const { token, user, _loading } = useStateContext();
     if (_loading === false) {
         if (token) {
@@ -29,10 +30,12 @@ function ManagerLayout({ children }) {
                     )
                 }
             } else {
-                return (<Navigate to="/login" />)
+                // return (<Navigate to="/login" />)
+                navigate('/login')
             }
         } else {
-            return (<Navigate to="/login" />)
+            navigate('/login')
+            // return (<Navigate to="/login" />)
         }
     } else {
         return (
